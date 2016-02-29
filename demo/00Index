@@ -1,0 +1,6 @@
+aceArbor_demo                Ancestral state reconstruction
+bisseArbor_demo              BiSSE analysis
+discreteCorrelation_demo     Correlation tests for two discrete characters
+phyloPCA_demo                Phylogenetic PCA
+phyloRegression_demo         Phylogenetic regression
+physigArbor_demo             Phylogenetic signal
