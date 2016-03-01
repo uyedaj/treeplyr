@@ -611,3 +611,9 @@ paint_clades <- function(tdObject, nclades=1, name="clades", interactive=TRUE, t
   return(tdObject)
 }
 
+#' @rdname group_by_.treedata
+#' @export
+ungroup.grouped_treedata <- function(x){
+  x$dat <- ungroup(x$dat)
+  return(x)
+}

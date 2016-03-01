@@ -3,9 +3,12 @@
 \name{group_by_.treedata}
 \alias{group_by.treedata}
 \alias{group_by_.treedata}
+\alias{ungroup.grouped_treedata}
 \title{Function for grouping an object of class \code{treedata}}
 \usage{
 \method{group_by_}{treedata}(.data, ..., .dots, add = FALSE)
+
+\method{ungroup}{grouped_treedata}(x)
 }
 \arguments{
 \item{.data}{An object of class \code{treedata}}
