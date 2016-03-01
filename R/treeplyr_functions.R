@@ -223,6 +223,7 @@ summarise_.grouped_treedata <- function(.data, ..., .dots){
 #' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
 #' @param add By default, when add = FALSE, group_by will override existing groups. 
 #' To instead add to the existing groups, use add = TRUE
+#' @param x An object of class \code{treedata}
 #' @details Groups the data frame and phylogeny by one of the factors in the data table.
 #' @return An object of class \code{grouped_treedata}. 
 #' @seealso \code{\link{summarize}}
