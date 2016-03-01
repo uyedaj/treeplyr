@@ -19,6 +19,8 @@
 
 \item{add}{By default, when add = FALSE, group_by will override existing groups. 
 To instead add to the existing groups, use add = TRUE}
+
+\item{x}{An object of class \code{treedata}}
 }
 \value{
 An object of class \code{grouped_treedata}.
