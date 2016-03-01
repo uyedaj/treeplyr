@@ -2,7 +2,7 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{make.treedata}
 \alias{make.treedata}
-\title{Function for making an object of class 'treedata'}
+\title{Function for making an object of class \code{treedata}}
 \usage{
 make.treedata(tree, data, name_column = "detect")
 }
@@ -11,16 +11,22 @@ make.treedata(tree, data, name_column = "detect")
 
 \item{data}{A data frame or matrix}
 
-\item{name_column}{The column of \code{data} that contains the names to be matched to the tree. By default, it is set to "detect" which finds the column with the most matches to the tree (including the rownames).}
+\item{name_column}{An optional argument that specifies the column of \code{data} that contains the 
+names to be matched to the tree. By default, it is set to "detect" which finds the column with the 
+most matches to the tree (including 
+the rownames).}
 }
 \value{
-An object of class "\code{treedata}". The tree is pruned of tips not represented in the data, and the data is filtered for taxa not in the tree. The data is returned as a data frame tble that is compatible with \code{dplyr} functions.
+An object of class "\code{treedata}". The tree is pruned of tips not represented in the data, 
+and the data is filtered for taxa not in the tree. The data is returned as a data frame tble that is 
+compatible with \code{dplyr} functions.
 }
 \description{
-This function generates an object of class 'treedata' that ensures that the ordering of tip labels and data remain intact. The object can be manipulated using \code{dplyr} functions.
+This function generates an object of class \code{treedata} that ensures that the ordering of tip labels 
+and data remain intact. The object can be manipulated using \code{dplyr} functions.
 }
 \examples{
 data(anolis)
-td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
+td <- make.treedata(anolis$phy, anolis$dat)
 }
 

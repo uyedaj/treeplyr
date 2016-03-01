@@ -21,7 +21,12 @@ Apply a function over all treedata object columns and return a list of results, 
 normal apply function
 }
 \details{
-Note that if the parameter "phy" is specified in the additional parameters (i.e. '...'), then 
-it will be substituted with the treedata object $phy.
+Note that if the parameter \code{phy} is specified in the additional parameters (i.e. '...'), 
+then it will be substituted with the \code{treedata} object \code{$phy}.
+}
+\examples{
+data(anolis)
+td <- make.treedata(anolis$phy, anolis$dat)
+td \%>\% forceNumeric(.) \%>\% tdapply(., 2, phytools::phylosig, tree=phy)
 }
 

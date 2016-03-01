@@ -1,2 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^tutorial/
+^tutorial/*
+^tutorial/.
+^tutorial/.*
+^tutorial/.*$
+^scratch.R
+

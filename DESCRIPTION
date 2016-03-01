@@ -1,7 +1,6 @@
 Package: treeplyr
 Type: Package
-Title: An R package that allows dplyr to be used on matched tree and data
-    objects
+Title: An R Package for Using \code{dplyr} on Matched Tree and Data Objects
 Version: 0.1
 Date: 2016-02-28
 Author: Josef Uyeda
@@ -10,8 +9,13 @@ Description: This R package that matches phylogenetic trees and trait data, and
     allows dplyr-like manipulation of tree and data.
 License: GPL-2 | GPL-3
 Depends:
-    ape,
+    ape (>= 3.0-6),
     dplyr,
+    R (>= 2.15.0)
 Imports:
-    lazyeval
+    Rcpp (>= 0.10.3),
+    lazyeval, 
+    phytools,
+    geiger
+LinkingTo: Rcpp
 RoxygenNote: 5.0.1

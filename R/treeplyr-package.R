@@ -1,4 +1,4 @@
-#' treeplyr: An R package that allows dplyr to be used on matched tree and data objects
+#' treeplyr: An R Package for Using \code{dplyr} on Matched Tree and Data Objects
 #' 
 #' An R package that matches phylogenetic trees and trait data, and allows simultaneous dplyr-like 
 #' manipulation of matched tree and/or data.
@@ -6,7 +6,9 @@
 #' @docType package
 #' @author Josef Uyeda
 #' @name treeplyr
-#' @import ape dplyr
+#' @useDynLib treeplyr
+#' @import ape dplyr Rcpp
 #' @importFrom lazyeval all_dots
-#' @importFrom bayou identifyBranches
+#' @importFrom phytools phylosig
+#' @importFrom geiger fitContinuous
 NULL

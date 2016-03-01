@@ -3,7 +3,7 @@
 \name{reorder}
 \alias{reorder}
 \alias{reorder.treedata}
-\title{Reorder a 'treedata' object}
+\title{Reorder a \code{treedata} object}
 \usage{
 reorder(tdObject, ...)
 
@@ -11,21 +11,26 @@ reorder(tdObject, ...)
   index.only = FALSE, ...)
 }
 \arguments{
-\item{tdObject}{An object of class 'treedata'}
+\item{tdObject}{An object of class \code{treedata}}
 
-\item{...}{Additional arguments to reorder}
+\item{...}{Additional arguments to reorder.phylo}
 
 \item{order}{Method for reordering}
 
-\item{index.only}{XXX}
+\item{index.only}{Whether a index is returned rather than the reordered treedata object}
 }
 \value{
-An object of class 'treedata'
+An object of class \code{treedata}
 }
 \description{
-Reorders a 'treedata' object. Both the tips and the data are automatically reordered to match.
+Reorders a \code{treedata} object. Both the tips and the data are automatically reordered to match.
 }
 \examples{
-x <- 10
+data(anolis)
+td <- make.treedata(anolis$phy, anolis$dat)
+td <- reorder(td, "postorder")
+}
+\seealso{
+\code{\link{reorder.phylo}}
 }
 

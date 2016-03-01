@@ -3,33 +3,35 @@
 \name{treeply}
 \alias{treeply}
 \alias{treeply.treedata}
-\title{Run a function on the phylogeny of a 'treedata' object}
+\title{Run a function on the phylogeny of a \code{treedata} object}
 \usage{
 treeply(tdObject, ...)
 
 \method{treeply}{treedata}(tdObject, FUN, ...)
 }
 \arguments{
-\item{tdObject}{An object of class 'treedata'}
+\item{tdObject}{An object of class \code{treedata}}
 
 \item{...}{Additional arguments}
 
 \item{FUN}{A function that operates on an object of class 'phylo'}
 }
 \value{
-An object of class 'treedata'
+An object of class \code{treedata}
 }
 \description{
-Applies a function to the phylogeny in a 'treedata' object. If the order of tips are changed, or if tips are dropped, then the data are automatically reordered to match the tree.
+Applies a function to the phylogeny in a \code{treedata} object. If the order of 
+tips are changed, or if tips are dropped, then the data are automatically reordered 
+to match the tree.
 }
 \examples{
 data(anolis)
-td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
-td_OU <- treeply(td, geiger::rescale.phylo, model="OU", 10)
+td <- make.treedata(anolis$phy, anolis$dat)
+td2 <- treeply(td, drop.tip, 1:50)
   
 par(mfrow=c(1,2))
 plot(td$phy)
-plot(td_OU$phy)
+plot(td2$phy)
 
 }
 

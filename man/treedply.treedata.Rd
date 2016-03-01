@@ -3,7 +3,7 @@
 \name{treedply}
 \alias{treedply}
 \alias{treedply.treedata}
-\title{Run a function on a 'treedata' object}
+\title{Run a function on a \code{treedata} object}
 \usage{
 treedply(tdObject, ...)
 
@@ -18,16 +18,16 @@ treedply(tdObject, ...)
 Function output
 }
 \description{
-Run a function on a 'treedata' object
+Run a function on a \code{treedata} object
 }
 \details{
-This function allows arbitrary R functions that use trees and data to be run on a 'treedata' objects.
+This function allows arbitrary R functions that use trees and data to be run on 
+\code{treedata} objects.
 }
 \examples{
 data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
 treedply(td, geiger::fitContinuous(phy, getVector(dat, SVL), model="BM", ncores=1))
- 
 treedply(td, phytools::phylosig(phy, getVector(dat, awesomeness), "lambda", test=TRUE))
 treedply(td, phytools::phenogram(phy, getVector(dat, SVL), ftype="off", spread.labels=FALSE))
 }

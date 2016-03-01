@@ -1,14 +1,20 @@
-#' Function for making an object of class 'treedata'
+#' Function for making an object of class \code{treedata}
 #' 
-#' This function generates an object of class 'treedata' that ensures that the ordering of tip labels and data remain intact. The object can be manipulated using \code{dplyr} functions.
+#' This function generates an object of class \code{treedata} that ensures that the ordering of tip labels 
+#' and data remain intact. The object can be manipulated using \code{dplyr} functions.
 #' 
 #' @param tree An object of class 'phylo'
 #' @param data A data frame or matrix
-#' @param name_column The column of \code{data} that contains the names to be matched to the tree. By default, it is set to "detect" which finds the column with the most matches to the tree (including the rownames).
-#' @return An object of class "\code{treedata}". The tree is pruned of tips not represented in the data, and the data is filtered for taxa not in the tree. The data is returned as a data frame tble that is compatible with \code{dplyr} functions. 
+#' @param name_column An optional argument that specifies the column of \code{data} that contains the 
+#' names to be matched to the tree. By default, it is set to "detect" which finds the column with the 
+#' most matches to the tree (including 
+#' the rownames).
+#' @return An object of class "\code{treedata}". The tree is pruned of tips not represented in the data, 
+#' and the data is filtered for taxa not in the tree. The data is returned as a data frame tble that is 
+#' compatible with \code{dplyr} functions. 
 #' @examples
 #' data(anolis)
-#' td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
+#' td <- make.treedata(anolis$phy, anolis$dat)
 #' @export
 make.treedata <- function(tree, data, name_column="detect") {
   if(class(tree)!="phylo") stop("tree must be of class 'phylo'")
@@ -32,11 +38,9 @@ make.treedata <- function(tree, data, name_column="detect") {
     if(all(matches==0)) stop("No matching names found between data and tree")
     name_column <- which(matches==max(matches))-offset
   }
-  dat <- tbl_df(as.data.frame(lapply(1:ncol(data), function(x) type.convert(apply(data[,x, drop=FALSE], 1, as.character)))))
-  #dat <- tbl_df(as.data.frame(lapply(1:ncol(data), function(x) type.convert(as.character(data[,x])))))
-  #dat <- data
+  dat <- tbl_df(as.data.frame(lapply(1:ncol(data), function(x) 
+                                          type.convert(apply(data[,x, drop=FALSE], 1, as.character)))))
   colnames(dat) <- coln
-  #dat <- apply(dat, 2, type.convert)
   if(name_column==0){
     clnm <- colnames(dat)
     dat <- dat[,clnm, drop=FALSE]
@@ -71,124 +75,129 @@ make.treedata <- function(tree, data, name_column="detect") {
   return(td)
 }
 
-#' Function for mutating an object of class 'treedata'
+#' Function for mutating an object of class \code{treedata}
 #' 
 #' This function can be used to add new variables to a treedata object; see \code{\link{mutate}}.
 #' 
-#' @param tdObject A "\code{treedata}" object
+#' @aliases mutate.treedata mutate.grouped_treedata mutate_.grouped_treedata
+#' @param .data An object of class \code{treedata}
 #' @param ... Arguments to mutate the treedata object
-#' @return An object of class "\code{treedata}" with new data added. 
+#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
+#' @return An object of class \code{treedata} with new data added. 
+#' @seealso \code{\link{mutate}}
 #' @examples
 #' data(anolis)
-#' td <- make.treedata(anolis$phy, anolis$dat[,-(3:5)], name_column=1)
-#' tdmutate <- mutate(td, anolis$dat[,3])
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' tdmutate <- mutate(td, lnSVL = log(SVL), badassery = awesomeness + hostility)
 #' @export
-mutate.treedata <- function(tdObject, ...){
-  if(is.null(list(substitute(...))[[1]])) stop("No expressions provided to add to the treedata object")
-  dat <- mutate_impl.dplyr(tdObject$dat, named_dots.dplyr(...))
-  tdObject$dat <- dat
-  rownames(tdObject$dat) <- attributes(tdObject)$tip.label
-  return(tdObject)
+mutate_.treedata <- function(.data, ..., .dots){
+  dots <- all_dots(.dots, ..., all_named=TRUE)
+  dat <- mutate_(.data$dat, .dots = dots)
+  row.names(dat) <- attributes(.data)$tip.label
+  .data$dat <- dat
+  return(.data)
 }
 
-#' Function for selecting columns from an object of class 'treedata'
+
+#' Function for selecting columns from an object of class \code{treedata}
 #' 
-#' This function can be used to select a subset of variables (columns) from a treedata object; see \code{\link{select}}.
+#' This function can be used to select a subset of variables (columns) from a treedata object; 
+#' see \code{\link{select}}.
 #' 
-#' @param tdObject A "\code{treedata}" object
-#' @param ... Additional arguments to select function
-#' @return An object of class "\code{treedata}" with specified variables selected. 
+#' @aliases select.treedata select.grouped_treedata select_.grouped_treedata
+#' @param .data An object of class \code{treedata}
+#' @param ... Additional arguments to select columns
+#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
+#' @return An object of class \code{treedata} with specified variables selected. 
+#' @seealso \code{\link{select}}
+#' @examples
+#' data(anolis)
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' tdselect <- select(td, SVL, awesomeness)
+#' @export
+select_.treedata <- function(.data, ..., .dots){
+  dots <- all_dots(.dots, ...)
+  vars <- select_vars_(names(.data$dat), dots)
+  dat <- .data$dat[, vars, drop = FALSE]
+  row.names(dat) <- attributes(.data)$tip.label
+  .data$dat <- dat
+  return(.data)
+}
+
+#' Function for filtering rows from an object of class \code{treedata}
+#' 
+#' This function can be used to select a subset of species (rows) from a treedata object; 
+#' see \code{\link{filter}}.
+#' 
+#' @aliases filter.treedata filter_.grouped_treedata filter.grouped_treedata
+#' @param .data An object of class \code{treedata}
+#' @param ... Additional arguments to filter by 
+#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
+#' @return An object of class \code{treedata} with the dataset filtered by the specified criteria.
+#' @seealso \code{\link{filter}}
 #' @examples
 #' data(anolis)
 #' td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
-#' tdselect <- select(td, SVL)
+#' tdfilter <- filter(td, island=="Cuba", SVL > 3.5)
 #' @export
-select.treedata <- function(tdObject, ...){
-  if(is.null(list(substitute(...))[[1]]))  stop("No criteria provided for selection")
-  vars <- select_vars(names(tdObject$dat), ..., env = parent.frame())
-  dat <- select_impl.dplyr(tdObject$dat, vars)
-  #dat <- lapply(dat, function(x){names(x) <- tdObject$dat[,1]; x})
-  tdObject$dat <- dat
-  rownames(tdObject$dat) <- attributes(tdObject)$tip.label
-  return(tdObject)
+filter_.treedata <- function(.data, ..., .dots){
+  dots <- all_dots(.dots, ..., all_named=TRUE)
+  .data$dat <- mutate(.data$dat, tip.label=attributes(.data)$tip.label)
+  dat <- filter_(.data$dat, .dots = dots)
+  .data$dat <- dat
+  attributes(.data)$tip.label <- .data$dat$tip.label
+  .data$dat <- select(.data$dat, 1:(ncol(.data$dat)-1))
+  .data$phy <- drop.tip(.data$phy, .data$phy$tip.label[!(.data$phy$tip.label %in% attributes(.data)$tip.label)])
+  attributes(.data$dat)$row.names <- .data$phy$tip.label
+  return(.data)
 }
 
-#' Function for filtering rows from an object of class 'treedata'
+
+#' Function for summarizing an object of class \code{treedata}
 #' 
-#' This function can be used to select a subset of species (rows) from a treedata object; see \code{\link{filter}}.
+#' This function can be used to summarize a treedata object. 
 #' 
-#' @param tdObject A "\code{treedata}" object
-#' @param ... Arguments used to filter the data.
-#' @return An object of class "\code{treedata}" with specified species selected. 
+#' @aliases summarize.treedata summarize_.treedata summarise_.treedata summarize_.grouped_treedata summarise_.grouped_treedata
+#' @param .data An object of class \code{treedata}
+#' @param ... Additional expressions by which to summarize data in the \code{treedata} object
+#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
+#' @details Summarizing \code{treedata} objects allows expressions using the objects \code{phy}. The \code{treedata}
+#' object can also be grouped, with summary statistics being applied to the pruned groups and phylogenies. 
+#' @return An object of class \code{tbl_df} with the requested summary data.
+#' @seealso \code{\link{summarize}}, \code{\link{group_by}}
 #' @examples
 #' data(anolis)
-#' td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
-#' tdfilter <- filter(td, island=="Cuba")
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' summarize(td, ntips = length(phy$tip.label), meanSVL = mean(SVL), sdSVL = sd(SVL))
+#' tdGrouped <- group_by(td, ecomorph)
+#' summarize(tdGrouped, ntips = length(phy$tip.label), 
+#'    totalBL = sum(phy$edge.length), meanSVL = mean(SVL), sdSVL = sd(SVL))
 #' @export
-filter.treedata <- function(tdObject, ...){
-  #if(is.null(list(substitute(...))[[1]]))  stop("No criteria provided for filtering")
-  tdObject$dat <- mutate(tdObject$dat, tip.label=attributes(tdObject)$tip.label)
-  tdObject$dat <- filter(tdObject$dat, ...)
-  attributes(tdObject)$tip.label <- tdObject$dat$tip.label
-  tdObject$dat <- select(tdObject$dat, 1:(ncol(tdObject$dat)-1))
-  rownames(tdObject$dat) <- attributes(tdObject)$tip.label
-  tdObject$phy <- drop.tip(tdObject$phy, tdObject$phy$tip.label[!(tdObject$phy$tip.label %in% attributes(tdObject)$tip.label)])
-  return(tdObject)
-}
-
-#' @name summarise.treedata
-#' @aliases summarize.treedata
-#' @title Function for summarizing an object of class 'treedata'
-#' 
-#' This function can be used to summarize a treedata object. BUT IT DOES NOT WORK
-#' 
-#' @param tdObject A "\code{treedata}" object
-#' @param ... additional arguments to summarize
-#' @return A summary of the treedata object 
-#' @examples 
-#' data(anolis)
-#' @export
-summarize.treedata <- function(tdObject, ...){
-  if(is.null(list(substitute(...))[[1]]))  stop("No expression provided to summarize data")
-  phy <- tdObject$phy
-  dots <- lazyeval::all_dots(.dots, ..., all_named = TRUE)
-  res <- summarise_(tdObject$dat, .dots = dots)
-  return(res)
-}
-
-#' @export
-summarise.treedata <- function(tdObject, ...){
-  if(is.null(list(substitute(...))[[1]]))  stop("No expression provided to summarize data")
-  phy <- tdObject$phy
-  dots <- lazyeval::all_dots(.dots, ..., all_named = TRUE)
-  res <- summarise_(tdObject$dat, .dots = dots)
-  return(res)
-}
-
-#' @export
-summarise_.treedata <- function(tdObject, ..., .dots){
+summarise_.treedata <- function(.data, ..., .dots){
   #if(is.null(list(substitute(...))[[1]])) stop("No expression provided to summarize data")
   dots <- lazyeval::all_dots(.dots, ..., all_named = TRUE)
   env <- new.env(parent = parent.frame(), size = 1L)
-  env$phy <- tdObject$phy
-  env$dat <- as.data.frame(tdObject$dat)
-  env$tip.label <- tdObject$phy$tip.label
+  env$phy <- .data$phy
+  env$dat <- as.data.frame(.data$dat)
+  env$tip.label <- .data$phy$tip.label
   rownames(env$dat) <- env$phy$tip.label
   for(i in 1:length(dots)){
     dots[[i]]$env <- env
   }
-  res <- summarise_(tdObject$dat, .dots = dots)
+  res <- summarise_(.data$dat, .dots = dots)
   return(res)
 }
 
-summarise_.grouped_treedata <- function(tdObject, ..., .dots){
+#' @rdname summarise_.treedata
+#' @export
+summarise_.grouped_treedata <- function(.data, ..., .dots){
   #if(is.null(list(substitute(...))[[1]])) stop("No expression provided to summarize data")
   dots <- lazyeval::all_dots(.dots, ..., all_named = TRUE)
-  nind <- (1:nrow(tdObject$dat))
-  group_levels <- attributes(tdObject$dat)$labels[[1]]
-  group_by_var <- colnames(attributes(tdObject$dat)$labels)[1]
-  phys <- lapply(attributes(tdObject$dat)$indices, function(x) drop.tip(tdObject$phy, nind[!(nind %in% (x+1))]))
-  tds <- lapply(group_levels, function(x) filter_(tdObject, paste(group_by_var, "=='", x,"'", sep="")))
+  nind <- (1:nrow(.data$dat))
+  group_levels <- attributes(.data$dat)$labels[[1]]
+  group_by_var <- colnames(attributes(.data$dat)$labels)[1]
+  phys <- lapply(attributes(.data$dat)$indices, function(x) drop.tip(.data$phy, nind[!(nind %in% (x+1))]))
+  tds <- lapply(group_levels, function(x) filter_(.data, paste(group_by_var, "=='", x,"'", sep="")))
   envs <- lapply(1:length(group_levels), function(x){e <- new.env(parent=parent.frame(), size=1L);
                                                       e$phy <- phys[[x]];
                                                       e$dat <- tds[[x]]$dat;
@@ -204,13 +213,33 @@ summarise_.grouped_treedata <- function(tdObject, ..., .dots){
   return(OUT)
 }
 
+#' Function for grouping an object of class \code{treedata}
+#' 
+#' This function can be used to group a treedata object by some factor. 
+#' 
+#' @aliases group_by.treedata
+#' @param .data An object of class \code{treedata}
+#' @param ... The name of the grouping factor.
+#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
+#' @param add By default, when add = FALSE, group_by will override existing groups. 
+#' To instead add to the existing groups, use add = TRUE
+#' @details Groups the data frame and phylogeny by one of the factors in the data table.
+#' @return An object of class \code{grouped_treedata}. 
+#' @seealso \code{\link{summarize}}
+#' @examples
+#' data(anolis)
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' tdGrouped <- group_by(td, ecomorph)
+#' summarize(tdGrouped, ntips = length(phy$tip.label), 
+#'    totalBL = sum(phy$edge.length), meanSVL = mean(SVL), sdSVL = sd(SVL))
 #' @export
-group_by_.treedata <- function(tdObject, ..., .dots, add=FALSE){
-  groups <- dplyr:::group_by_prepare(tdObject$dat, ..., .dots = .dots, add = add)
+group_by_.treedata <- function(.data, ..., .dots, add=FALSE){
+  
+  groups <- group_by_prepare(.data$dat, ..., .dots = .dots, add = add)
   dat <- grouped_df(groups$data, groups$groups)
-  tdObject$dat <- dat
-  class(tdObject) <- c("grouped_treedata", "treedata", "list")
-  return(tdObject)
+  .data$dat <- dat
+  class(.data) <- c("grouped_treedata", "treedata", "list")
+  return(.data)
 }
 
 #' @rdname reorder.treedata
@@ -219,16 +248,22 @@ reorder <- function(tdObject, ...){
   UseMethod("reorder")
 }
 
-#' Reorder a 'treedata' object
-#' @description Reorders a 'treedata' object. Both the tips and the data are automatically reordered to match.
-#' @param tdObject An object of class 'treedata'
+#' Reorder a \code{treedata} object
+#' 
+#' Reorders a \code{treedata} object. Both the tips and the data are automatically reordered to match.
+#' 
+#' @param tdObject An object of class \code{treedata}
 #' @param order Method for reordering
-#' @param index.only XXX
-#' @param ... Additional arguments to reorder
-#' @return An object of class 'treedata'
+#' @param index.only Whether a index is returned rather than the reordered treedata object
+#' @param ... Additional arguments to reorder.phylo
+#' @return An object of class \code{treedata}
+#' 
+#' @seealso \code{\link{reorder.phylo}}
 #' 
 #' @examples
-#' x <- 10
+#' data(anolis)
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' td <- reorder(td, "postorder")
 #' @export
 reorder.treedata <- function(tdObject, order="postorder", index.only=FALSE, ...){
   dat.attr <- attributes(tdObject$dat)
@@ -251,22 +286,26 @@ treeply <- function(tdObject, ...){
   UseMethod("treeply")
 }
 
-#' Run a function on the phylogeny of a 'treedata' object
-#' @description Applies a function to the phylogeny in a 'treedata' object. If the order of tips are changed, or if tips are dropped, then the data are automatically reordered to match the tree.
-#' @param tdObject An object of class 'treedata'
+#' Run a function on the phylogeny of a \code{treedata} object
+#' 
+#' Applies a function to the phylogeny in a \code{treedata} object. If the order of 
+#' tips are changed, or if tips are dropped, then the data are automatically reordered 
+#' to match the tree.
+#' 
+#' @param tdObject An object of class \code{treedata}
 #' @param FUN A function that operates on an object of class 'phylo'
 #' @param ... Additional arguments
 
-#' @return An object of class 'treedata'
+#' @return An object of class \code{treedata}
 #' 
 #' @examples
 #' data(anolis)
-#' td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
-#' td_OU <- treeply(td, geiger::rescale.phylo, model="OU", 10)
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' td2 <- treeply(td, drop.tip, 1:50)
 #'   
 #' par(mfrow=c(1,2))
 #' plot(td$phy)
-#' plot(td_OU$phy)
+#' plot(td2$phy)
 #' 
 #' @export
 treeply.treedata <- function(tdObject, FUN, ...){
@@ -292,9 +331,13 @@ treeply.treedata <- function(tdObject, FUN, ...){
 #' @param FUN A function to apply over the data frame
 #' @param ... Additional parameters passed on to FUN
 #' 
-#' @details Note that if the parameter "phy" is specified in the additional parameters (i.e. '...'), then 
-#' it will be substituted with the treedata object $phy. 
+#' @details Note that if the parameter \code{phy} is specified in the additional parameters (i.e. '...'), 
+#' then it will be substituted with the \code{treedata} object \code{$phy}. 
 #' 
+#' @examples
+#' data(anolis)
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' td %>% forceNumeric(.) %>% tdapply(., 2, phytools::phylosig, tree=phy)
 #' @export
 tdapply <- function(tdObject, MARGIN, FUN, ...){
   if(!class(tdObject)[1]=="treedata") stop("Object is not of class 'treedata'")
@@ -313,12 +356,13 @@ treedply <- function(tdObject, ...){
   UseMethod("treedply")
 }
 
-#' Run a function on a 'treedata' object
+#' Run a function on a \code{treedata} object
 #' 
 #' @param tdObject A treedata object
 #' @param ... A function call.
 #' 
-#' @details This function allows arbitrary R functions that use trees and data to be run on a 'treedata' objects. 
+#' @details This function allows arbitrary R functions that use trees and data to be run on 
+#' \code{treedata} objects. 
 #' 
 #' @return Function output
 #' 
@@ -326,7 +370,6 @@ treedply <- function(tdObject, ...){
 #' data(anolis)
 #' td <- make.treedata(anolis$phy, anolis$dat)
 #' treedply(td, geiger::fitContinuous(phy, getVector(dat, SVL), model="BM", ncores=1))
-#'  
 #' treedply(td, phytools::phylosig(phy, getVector(dat, awesomeness), "lambda", test=TRUE))
 #' treedply(td, phytools::phenogram(phy, getVector(dat, SVL), ftype="off", spread.labels=FALSE))
 #' @export
@@ -367,20 +410,6 @@ getVector <- function(dat, ...){
 }
 
 #' @export
-getVector_ <- function(dat, ...){
-  args <- eval(...)
-  arg_sub <- type.convert(args)
-  if(is.numeric(arg_sub) | is.integer(arg_sub)) args <- arg_sub
-  vecs <- lapply(args,function(x) dat[[x]])
-  vecs <- lapply(vecs, function(x) setNames(x, attributes(dat)$row.names))
-  if(length(vecs)==1){
-    vecs = vecs[[1]]
-  } else {names(vecs) <- args}
-  return(vecs)
-}
-
-
-#' @export
 print.treedata <- function(x, ...){
   cat("$phy \n")
   print(x$phy)
@@ -390,36 +419,39 @@ print.treedata <- function(x, ...){
 }
 
 #' @export
-summary.treedata <- function(x, ...){
+summary.treedata <- function(object, ...){
  
   cat('A treeplyr treedata object', "\n")
-  cat(paste('The dataset contains ', ncol(x$dat), ' traits'), "\n")
-  types <- setNames(suppressWarnings(detectAllCharacters(as.matrix(x$dat))), colnames(x$dat))
+  cat(paste('The dataset contains ', ncol(object$dat), ' traits'), "\n")
+  types <- setNames(suppressWarnings(detectAllCharacters(as.matrix(object$dat))), colnames(object$dat))
   cat("Continuous traits: ", names(types)[which(types=="continuous")], "\n")
   cat("Discrete traits: ", names(types)[which(types=="discrete")], "\n")
-  cat(paste("The following traits have missing values:", paste(names(types)[apply(x$dat, 2, function(y) any(is.na(y)))], collapse=", "), "\n"))
-  cat(paste("These taxa were dropped from the tree:", paste(attributes(x)$dropped$dropped_from_tree, collapse=", "), "\n"))
-  cat(paste("These taxa were dropped from the data:", paste(attributes(x)$dropped$dropped_from_data, collapse=", "), "\n"))
+  cat(paste("The following traits have missing values:", paste(names(types)[apply(object$dat, 2, function(y) any(is.na(y)))], collapse=", "), "\n"))
+  cat(paste("These taxa were dropped from the tree:", paste(attributes(object)$dropped$dropped_from_tree, collapse=", "), "\n"))
+  cat(paste("These taxa were dropped from the data:", paste(attributes(object)$dropped$dropped_from_data, collapse=", "), "\n"))
 
   
   cat("$phy \n")
-  print(x$phy)
+  print(object$phy)
   cat("\n$dat \n")
-  print(x$dat)
+  print(object$dat)
 }
 
 
 
-#' Function for checking whether a treedata object contains only numeric columns and for forcing data columns into numeric format
+#' Function for checking whether a treedata object contains only numeric columns and for forcing 
+#' data columns into numeric format
 #' 
-#' This function can be used to check if a treedata object contains numeric columns and, if desired, drop all non-numeric columns.
+#' This function can be used to check if a treedata object contains numeric columns and, if 
+#' desired, drop all non-numeric columns.
 #' 
-#' @param tdObject A "\code{treedata}" object
-#' @param return.numeric If TRUE, then a treedata object with all numeric columns will be returned; non-numeric columns will be removed.
+#' @param tdObject A \code{treedata} object
+#' @param return.numeric If TRUE, then a treedata object with all numeric columns will be returned; 
+#' non-numeric columns will be removed.
 #' @return If return.numeric, then an object of class "\code{treedata}" with only numeric columns. 
 #' @examples
 #' data(anolis)
-#' td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
+#' td <- make.treedata(anolis$phy, anolis$dat)
 #' tdnumeric <- forceNumeric(td)
 #' @export
 forceNumeric <- function(tdObject, return.numeric=TRUE) {
@@ -441,16 +473,21 @@ forceNumeric <- function(tdObject, return.numeric=TRUE) {
   }
 }
 
-#' Function for checking whether a treedata object contains only factors and for forcing data columns into factor format
+#' Function for checking whether a treedata object contains only factors and for forcing 
+#' data columns into factor format
 #' 
-#' This function can be used to check if a treedata object contains factors and, if desired, convert all columns automatically to factors.
+#' This function can be used to check if a treedata object contains factors and, if desired, 
+#' convert all columns automatically to factors.
 #' 
-#' @param tdObject A "\code{treedata}" object
-#' @param return.factor If TRUE, then a treedata object with all factors will be returned; columns will be forced into factors using \code{factor} and any with no repeated elements will be removed.
-#' @return If return.factor, then an object of class "\code{treedata}" with all columns as factors. 
+#' @param tdObject A \code{treedata} object
+#' @param return.factor If TRUE, then a treedata object with all factors will be returned; 
+#' columns will be forced into factors using \code{factor} and any with no repeated elements 
+#' will be removed.
+#' @return If return.factor, then an object of class "\code{treedata}" with all columns as 
+#' factors. 
 #' @examples
 #' data(anolis)
-#' td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
+#' td <- make.treedata(anolis$phy, anolis$dat)
 #' tdforcefactor <- forceFactor(td)
 #' @export
 forceFactor <- function(tdObject, return.factor=TRUE) {
@@ -487,131 +524,23 @@ forceFactor <- function(tdObject, return.factor=TRUE) {
   }
 }
 
-# Helper functions that allow string arguments for  dplyr's data modification functions like arrange, select etc. 
-# Author: Sebastian Kranz
-
-# Examples are below
-
-#' Modified version of dplyr's filter that uses string arguments
-#' @param .data dplyr object
-#' @param ... Additional arguments
-#' @export
-s_filter = function(.data, ...) {
-  eval.string.dplyr(.data,"filter", ...)
-}
-
-#' Modified version of dplyr's select that uses string arguments
-#' @param .data dplyr object
-#' @param ... Additional arguments
-#' @export
-s_select = function(.data, ...) {
-  eval.string.dplyr(.data,"select", ...)
-}
-
-#' Modified version of dplyr's arrange that uses string arguments
-#' @param .data dplyr object
-#' @param ... Additional arguments
-#' @export
-s_arrange = function(.data, ...) {
-  eval.string.dplyr(.data,"arrange", ...)
-}
-
-#' Modified version of dplyr's arrange that uses string arguments
-#' @param .data dplyr object
-#' @param ... Additional arguments
-#' @export
-s_mutate = function(.data, ...) {
-  eval.string.dplyr(.data,"mutate", ...)
-}
-
-#' Modified version of dplyr's summarise that uses string arguments
-#' @param .data dplyr object
-#' @param ... Additional arguments
-#' @export
-s_summarise = function(.data, ...) {
-  eval.string.dplyr(.data,"summarise", ...)
-}
-
-#' Modified version of dplyr's group_by that uses string arguments
-#' @param .data dplyr object
-#' @param ... Additional arguments
-#' @export
-s_group_by = function(.data, ...) {
-  eval.string.dplyr(.data,"group_by", ...)
-}
-
-#' Modified version of dplyr's group_by that uses string arguments
-#' @param .data dplyr object
-#' @param ... Additional arguments
-#' @export
-s_treeply = function(.data, ...) {
-  eval.string.dplyr(.data,"treeply", ...)
-}
-
-#' Modified version of dplyr's group_by that uses string arguments
-#' @param .data dplyr object
-#' @param ... Additional arguments
-#' @export
-s_treedply = function(.data, ...) {
-  eval.string.dplyr(.data,"treedply", ...)
-}
-
-# Internal function used by s_filter, s_select etc.
-eval.string.dplyr = function(.data, .fun.name, ...) {
-  args = list(...)
-  args = unlist(args)
-  code = paste0(.fun.name,"(.data,", paste0(args, collapse=","), ")")
-  df = eval(parse(text=code,srcfile=NULL))
-  df  
-}
-
-#' @export
-select_.treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ...)
-  vars <- select_vars_(names(.data$dat), dots)
-  dat <- .data$dat[, vars, drop = FALSE]
-  row.names(dat) <- attributes(.data)$tip.label
-  .data$dat <- dat
-  return(.data)
-}
-
-#' @export
-mutate_.treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ..., all_named=TRUE)
-  dat <- mutate_impl.dplyr(.data$dat, dots)
-  row.names(dat) <- attributes(.data)$tip.label
-  .data$dat <- dat
-  return(.data)
-}
-
+#' @rdname mutate_.treedata
 #' @export
 mutate_.grouped_treedata <- function(.data, ..., .dots){
   dots <- all_dots(.dots, ..., all_named=TRUE)
-  dat <- mutate_impl.dplyr(.data$dat, dots)
+  dat <- mutate_(.data$dat, .dots = dots)
   row.names(dat) <- .data$phy$tip.label
   .data$dat <- dat
   return(.data)
 }
 
-#' @export
-filter_.treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ..., all_named=TRUE)
-  .data$dat <- mutate(.data$dat, tip.label=attributes(.data)$tip.label)
-  dat <- filter_impl.dplyr(.data$dat, dots)
-  .data$dat <- dat
-  attributes(.data)$tip.label <- .data$dat$tip.label
-  .data$dat <- select(.data$dat, 1:(ncol(.data$dat)-1))
-  .data$phy <- drop.tip(.data$phy, .data$phy$tip.label[!(.data$phy$tip.label %in% attributes(.data)$tip.label)])
-  attributes(.data$dat)$row.names <- .data$phy$tip.label
-  return(.data)
-}
-
+#' @rdname filter_.treedata
 #' @export
 filter_.grouped_treedata <- function(.data, ..., .dots){
   dots <- all_dots(.dots, ..., all_named=TRUE)
   cl <- class(.data$dat)
   .data$dat$tip.label <- .data$phy$tip.label
-  dat <- filter_impl.dplyr(.data$dat, dots)
+  dat <- filter_(.data$dat, .dots = dots)
   .data$dat <- dat
   attributes(.data)$tip.label <- .data$dat$tip.label
   .data$dat <- select(.data$dat, 1:(ncol(.data$dat)-1))
@@ -620,64 +549,35 @@ filter_.grouped_treedata <- function(.data, ..., .dots){
   return(.data)
 }
 
-select_impl.dplyr <- function (df, vars) 
-{
-    .Call("dplyr_select_impl", PACKAGE = "dplyr", df, vars)
-}
-
-filter_impl.dplyr <- function (df, dots) 
-{
-    .Call("dplyr_filter_impl", PACKAGE = "dplyr", df, dots)
-}
-
-mutate_impl.dplyr <- function (df, dots) 
-{
-    .Call("dplyr_mutate_impl", PACKAGE = "dplyr", df, dots)
-}
-
-named_dots.dplyr <- function (...) 
-{
-    auto_name.dplyr(dots.dplyr(...))
-}
-
-dots.dplyr <- function (...) 
-{
-  eval(substitute(alist(...)))
-}
-
-auto_name.dplyr <- function (x) 
-{
-  names(x) <- auto_names.dplyr(x)
-  x
-}
-
-auto_names.dplyr <- function (x) 
-{
-  nms <- names2.dplyr(x)
-  missing <- nms == ""
-  if (all(!missing)) 
-    return(nms)
-  deparse2 <- function(x) paste(deparse(x, 500L), collapse = "")
-  defaults <- vapply(x[missing], deparse2, character(1), USE.NAMES = FALSE)
-  nms[missing] <- defaults
-  nms
-}
-
-names2.dplyr <- function (x) 
-{
-  names(x) %||% rep("", length(x))
-}
-
 #' Add regimes to a treedata object
+#' 
+#' This function paints clades on the phylogeny and adds a data column that specifies to which clade each species
+#' belongs
+#' @param tdObject A \code{treedata} object
+#' @param nclades The number of clades that will be specified if used interactively
+#' @param name The name of the resulting data column
+#' @param interactive If \code{TRUE}, then a plot will appear that will allow the user to click on \code{nclades}
+#' branches. The selections will then be coverted into the data table. 
+#' @param type Either "nodes" or "branches" specifying if the ids provided specify the branch id (assuming a 
+#' post-ordered tree) or the node number. Ignored if \code{interactive = TRUE}.
+#' @param ids A vector of node numbers of branch numbers that specify clades. Ignored if \code{interactive=TRUE}.
+#' @param plot If \code{TRUE} and \code{interactive = FALSE} then a simmap plot is produced. 
+#' @examples 
+#' data(anolis)
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' td <- reorder(td, "postorder")
+#' td.painted <- paint_clades(td, interactive=FALSE, type="nodes", 
+#'                                    ids=c(184, 160, 135, 122), plot=TRUE)
+#' td.painted <- group_by(td.painted, clades)
+#' summarise(td.painted, 
+#'              psig1 = phytools::phylosig(setNames(SVL, phy$tip.label), tree=phy), 
+#'                    meanSVL = mean(SVL))
 #' @export
-paint_clades <- function(tdObject, nclades=1, name="clades", interactive=TRUE, type="nodes", ids=NULL, plot=TRUE, ...){
+paint_clades <- function(tdObject, nclades=1, name="clades", interactive=TRUE, type="nodes", ids=NULL, plot=TRUE){
   if(interactive){
-    regimes <- bayou::identifyBranches(tdObject$phy, nclades)
+    regimes <- .identifyBranches(tdObject$phy, nclades)
     cat("branches ", paste(regimes$sb, collapse=", "), "selected\n")
-    cols <- rainbow(length(regimes$sb) + 1)
-    L <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-    legend(min(L$xx), max(L$yy), legend=1:(nclades+1), lwd=3, col=cols)
-  } else 
+    } else 
     {
     if(type == "nodes"){
       if(any(!ids %in% (length(tdObject$phy$tip.label)+1):max(tdObject$phy$edge))) stop("Please specify valid internal node ids")
@@ -694,23 +594,20 @@ paint_clades <- function(tdObject, nclades=1, name="clades", interactive=TRUE, t
         sb <- regimes$sb
         n <- nclades
         loc <- regimes$loc
-        dum <- numeric(length(tdObject$phy$tip.label))
-        names(dum) <- tdObject$phy$tip.label
-        cache <- bayou:::.prepare.ou.univariate(tdObject$phy, dum)
+        cache <- .prepare.branches(tdObject$phy)
         pars <- list(sb = sb, loc = loc, t2 = 1:n + 1)
-        tr <- bayou:::.toSimmap(bayou:::.pars2map(pars, cache), cache)
-        cols <- rainbow(length(sb) + 1)
-        names(cols) <- 1:(length(sb) + 1)
-        phytools:::plotSimmap(tr, pts = FALSE, fsize = 0.5, colors = cols)
+        tr <- .toSimmap(.pars2map(pars, cache), cache)
+        cols <- .plotRegimes(tr, lwd=1, pal=rainbow)
         L <- get("last_plot.phylo", envir = .PlotPhyloEnv)
-        legend(min(L$xx), max(L$yy), legend=1:(nclades+1), lwd=3, col=cols)
+        legend(min(L$xx), max(L$yy), legend=names(cols), lwd=3, col=cols)
       }
       
     }
   regimes$t2 <- 2:(length(regimes$sb)+1)
   regimes$k <- nclades
   regimes$ntheta <- nclades+1
-  tdObject <- mutate(tdObject, bayou:::.tipregime(regimes, tdObject$phy))
+  tdObject <- mutate(tdObject, .tipregime(regimes, tdObject$phy))
   colnames(tdObject$dat)[ncol(tdObject$dat)] <- name
   return(tdObject)
 }
+
