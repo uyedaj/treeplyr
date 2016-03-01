@@ -7,3 +7,4 @@
 ^tutorial/.*$
 ^scratch.R
 ^\.travis.yml
+^README.md

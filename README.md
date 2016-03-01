@@ -1,7 +1,7 @@
 # treeplyr
-An R package for using \code{dplyr} on matched tree and data objects
+An R package for using *dplyr* on matched tree and data objects
 
-To install \code{treeplyr} directly from github, use the package devtools:
+To install *treeplyr* directly from github, use the package devtools:
 
 ```
 devtools::install_github("uyedaj/treeplyr")
