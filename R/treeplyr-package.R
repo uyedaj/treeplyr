@@ -11,4 +11,8 @@
 #' @importFrom lazyeval all_dots
 #' @importFrom phytools phylosig
 #' @importFrom geiger fitContinuous
+#' @importFrom grDevices rainbow
+#' @importFrom graphics legend lines locator par plot points text
+#' @importFrom stats setNames
+#' @importFrom utils type.convert
 NULL
