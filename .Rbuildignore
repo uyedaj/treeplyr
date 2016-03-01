@@ -6,4 +6,4 @@
 ^tutorial/.*
 ^tutorial/.*$
 ^scratch.R
-
+^\.travis.yml
