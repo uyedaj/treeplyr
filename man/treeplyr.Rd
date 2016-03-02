@@ -4,10 +4,10 @@
 \name{treeplyr}
 \alias{treeplyr}
 \alias{treeplyr-package}
-\title{treeplyr: An R Package for Using \code{dplyr} on Matched Tree and Data Objects}
+\title{treeplyr: 'dplyr' Functionality for Matched Tree and Data Objects}
 \description{
-An R package that matches phylogenetic trees and trait data, and allows simultaneous dplyr-like 
-manipulation of matched tree and/or data.
+Matches phylogenetic trees and trait data, and allows simultaneous 
+manipulation of the tree and data using 'dplyr'.
 }
 \author{
 Josef Uyeda

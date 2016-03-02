@@ -1,7 +1,7 @@
-#' treeplyr: An R Package for Using \code{dplyr} on Matched Tree and Data Objects
+#' treeplyr: 'dplyr' Functionality for Matched Tree and Data Objects
 #' 
-#' An R package that matches phylogenetic trees and trait data, and allows simultaneous dplyr-like 
-#' manipulation of matched tree and/or data.
+#' Matches phylogenetic trees and trait data, and allows simultaneous 
+#' manipulation of the tree and data using 'dplyr'.
 #' 
 #' @docType package
 #' @author Josef Uyeda
