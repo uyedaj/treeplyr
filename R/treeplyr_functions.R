@@ -91,7 +91,7 @@ make.treedata <- function(tree, data, name_column="detect") {
 #' tdmutate <- mutate(td, lnSVL = log(SVL), badassery = awesomeness + hostility)
 #' @export
 mutate_.treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ..., all_named=TRUE)
+  dots <- lazyeval::all_dots(.dots, ..., all_named=TRUE)
   dat <- mutate_(.data$dat, .dots = dots)
   row.names(dat) <- attributes(.data)$tip.label
   .data$dat <- dat
@@ -141,7 +141,7 @@ select_.treedata <- function(.data, ..., .dots){
 #' tdfilter <- filter(td, island=="Cuba", SVL > 3.5)
 #' @export
 filter_.treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ..., all_named=TRUE)
+  dots <- lazyeval::all_dots(.dots, ...)
   .data$dat <- mutate(.data$dat, tip.label=attributes(.data)$tip.label)
   dat <- filter_(.data$dat, .dots = dots)
   .data$dat <- dat
@@ -538,7 +538,7 @@ mutate_.grouped_treedata <- function(.data, ..., .dots){
 #' @rdname filter_.treedata
 #' @export
 filter_.grouped_treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ..., all_named=TRUE)
+  dots <- all_dots(.dots, ...)
   cl <- class(.data$dat)
   .data$dat$tip.label <- .data$phy$tip.label
   dat <- filter_(.data$dat, .dots = dots)
@@ -614,7 +614,7 @@ paint_clades <- function(tdObject, nclades=1, name="clades", interactive=TRUE, t
 
 #' @rdname group_by_.treedata
 #' @export
-ungroup.grouped_treedata <- function(x){
-  x$dat <- ungroup(x$dat)
+ungroup.grouped_treedata <- function(x, ...){
+  x$dat <- ungroup(x$dat, ...)
   return(x)
 }

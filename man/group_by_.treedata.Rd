@@ -8,7 +8,7 @@
 \usage{
 \method{group_by_}{treedata}(.data, ..., .dots, add = FALSE)
 
-\method{ungroup}{grouped_treedata}(x)
+\method{ungroup}{grouped_treedata}(x, ...)
 }
 \arguments{
 \item{.data}{An object of class \code{treedata}}
