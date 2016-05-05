@@ -1,7 +1,7 @@
 Package: treeplyr
 Type: Package
 Title: 'dplyr' Functionality for Matched Tree and Data Objects
-Version: 0.1
+Version: 0.1.1
 Date: 2016-02-28
 Author: Josef Uyeda
 Maintainer: Josef Uyeda <josef.uyeda@gmail.com>
@@ -18,4 +18,6 @@ Imports:
     phytools,
     geiger
 LinkingTo: Rcpp
+URL: https://github.com/uyedaj/treeplyr
+BugReports: https://github.com/uyedaj/treeplyr/issues
 RoxygenNote: 5.0.1
