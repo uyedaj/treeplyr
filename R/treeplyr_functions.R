@@ -37,9 +37,13 @@ make.treedata <- function(tree, data, name_column="detect") {
     matches <- sapply(tmp.df, function(x) sum(x %in% tree$tip.label))
     if(all(matches==0)) stop("No matching names found between data and tree")
     name_column <- which(matches==max(matches))-offset
+  } else{
+    if(is.character(name_column)){
+      name_column <- which(name_column==coln)[1]
+    }
   }
   dat <- tbl_df(as.data.frame(lapply(1:ncol(data), function(x) 
-                                          type.convert(apply(data[,x, drop=FALSE], 1, as.character)))))
+    type.convert(apply(data[,x, drop=FALSE], 1, as.character)))))
   colnames(dat) <- coln
   if(name_column==0){
     clnm <- colnames(dat)
@@ -69,9 +73,10 @@ make.treedata <- function(tree, data, name_column="detect") {
   td <- list(phy=phy, dat=dat)
   class(td) <- c("treedata", "list")
   attributes(td)$tip.label <- phy$tip.label
-  attributes(td$dat)$row.names <- phy$tip.label
+  #attributes(td$dat)$row.names <- phy$tip.label
   attributes(td)$dropped <- list(dropped_from_tree=data_not_tree,dropped_from_data=tree_not_data)
-  rownames(td$dat) <- attributes(td)$tip.label
+  #Removing rownames for future versions of dplyr
+  #rownames(td$dat) <- attributes(td)$tip.label
   return(td)
 }
 
@@ -93,7 +98,7 @@ make.treedata <- function(tree, data, name_column="detect") {
 mutate_.treedata <- function(.data, ..., .dots){
   dots <- lazyeval::all_dots(.dots, ..., all_named=TRUE)
   dat <- mutate_(.data$dat, .dots = dots)
-  row.names(dat) <- attributes(.data)$tip.label
+  #row.names(dat) <- attributes(.data)$tip.label
   .data$dat <- dat
   return(.data)
 }
@@ -119,7 +124,7 @@ select_.treedata <- function(.data, ..., .dots){
   dots <- all_dots(.dots, ...)
   vars <- select_vars_(names(.data$dat), dots)
   dat <- .data$dat[, vars, drop = FALSE]
-  row.names(dat) <- attributes(.data)$tip.label
+  #row.names(dat) <- attributes(.data)$tip.label
   .data$dat <- dat
   return(.data)
 }
@@ -148,7 +153,7 @@ filter_.treedata <- function(.data, ..., .dots){
   attributes(.data)$tip.label <- .data$dat$tip.label
   .data$dat <- select(.data$dat, 1:(ncol(.data$dat)-1))
   .data$phy <- drop.tip(.data$phy, .data$phy$tip.label[!(.data$phy$tip.label %in% attributes(.data)$tip.label)])
-  attributes(.data$dat)$row.names <- .data$phy$tip.label
+  #attributes(.data$dat)$row.names <- .data$phy$tip.label
   return(.data)
 }
 
@@ -180,7 +185,7 @@ summarise_.treedata <- function(.data, ..., .dots){
   env$phy <- .data$phy
   env$dat <- as.data.frame(.data$dat)
   env$tip.label <- .data$phy$tip.label
-  rownames(env$dat) <- env$phy$tip.label
+  #rownames(env$dat) <- env$phy$tip.label
   for(i in 1:length(dots)){
     dots[[i]]$env <- env
   }
@@ -272,7 +277,8 @@ reorder.treedata <- function(tdObject, order="postorder", index.only=FALSE, ...)
   index <- match(tdObject$phy$tip.label, phy$tip.label)
   tdObject$dat <- tdObject$dat[index,]
   attributes(tdObject$dat) <-dat.attr
-  attributes(tdObject$dat)$row.names <- attributes(tdObject)$tip.label <- phy$tip.label
+  #attributes(tdObject$dat)$row.names 
+  attributes(tdObject)$tip.label <- phy$tip.label
   tdObject$phy <- phy
   if(index.only){
     return(index)
@@ -370,9 +376,9 @@ treedply <- function(tdObject, ...){
 #' @examples
 #' data(anolis)
 #' td <- make.treedata(anolis$phy, anolis$dat)
-#' treedply(td, geiger::fitContinuous(phy, getVector(dat, SVL), model="BM", ncores=1))
-#' treedply(td, phytools::phylosig(phy, getVector(dat, awesomeness), "lambda", test=TRUE))
-#' treedply(td, phytools::phenogram(phy, getVector(dat, SVL), ftype="off", spread.labels=FALSE))
+#' treedply(td, geiger::fitContinuous(phy, getVector(td, SVL), model="BM", ncores=1))
+#' treedply(td, phytools::phylosig(phy, getVector(td, awesomeness), "lambda", test=TRUE))
+#' treedply(td, phytools::phenogram(phy, getVector(td, SVL), ftype="off", spread.labels=FALSE))
 #' @export
 treedply.treedata <- function(tdObject, ...){
   if(!is.call(substitute(...))){
@@ -393,17 +399,18 @@ treedply.treedata <- function(tdObject, ...){
 
 #' A function for returning a named vector from a data frame or matrix with row names
 #'
-#' @param dat A data frame or matrix with row names
+#' @param td A treedata object
 #' @param ... The name of the column to select
 #' 
 #' @return A named vector
 #' @export
-getVector <- function(dat, ...){
+getVector <- function(td, ...){
+  dat <- td$dat
   args <- as.character(substitute(list(...)))[-1L]
   arg_sub <- type.convert(args)
   if(is.numeric(arg_sub) | is.integer(arg_sub)) args <- arg_sub
   vecs <- lapply(args,function(x) dat[[x]])
-  vecs <- lapply(vecs, function(x) setNames(x, attributes(dat)$row.names))
+  vecs <- lapply(vecs, function(x) setNames(x, attributes(td)$tip.label))
   if(length(vecs)==1){
     vecs = vecs[[1]]
   } else {names(vecs) <- args}
@@ -530,7 +537,7 @@ forceFactor <- function(tdObject, return.factor=TRUE) {
 mutate_.grouped_treedata <- function(.data, ..., .dots){
   dots <- all_dots(.dots, ..., all_named=TRUE)
   dat <- mutate_(.data$dat, .dots = dots)
-  row.names(dat) <- .data$phy$tip.label
+  #row.names(dat) <- .data$phy$tip.label
   .data$dat <- dat
   return(.data)
 }
@@ -617,4 +624,74 @@ paint_clades <- function(tdObject, nclades=1, name="clades", interactive=TRUE, t
 ungroup.grouped_treedata <- function(x, ...){
   x$dat <- ungroup(x$dat, ...)
   return(x)
+}
+
+#' @export 
+'[[.treedata' <- function(x, ..., exact=TRUE){
+  y <- x$dat
+  res <- '[[.data.frame'(y, ..., exact=exact)
+  if(length(res) != nrow(y)){
+    stop("Use '[' for selecting multiple columns")
+  } 
+  return(setNames(res, x$phy$tip.label))
+}
+
+#' @export
+'[.treedata' <- function(x, i, j, drop=FALSE, tip.label=FALSE){
+  if(!tip.label){
+    y <- as.data.frame(x$dat)
+  } else {
+    y <- as.data.frame(cbind(tip.label= x$phy$tip.label, x$dat))
+    if(!missing(j)){
+      if(is.numeric(j)){
+        j <- c(1, j+1)
+      } else {
+        j <- c('tip.label', j)
+      }
+    }
+  }
+  if (drop) 
+    warning("drop ignored", call. = FALSE)
+  nr <- nrow(y)
+  if (nargs() <= 2L) {
+    if (!missing(i)) {
+      .check_names_df(y, i)
+      result <- .subset(y, i)
+    }
+    else {
+      result <- y
+    }
+    attr(result, "row.names") <- .set_row_names(nr)
+    return(.as_data_frame.data.frame(result))
+  }
+  if (!missing(j)) {
+    .check_names_df(y, j)
+    y <- .subset(y, j)
+  }
+  if (!missing(i)) {
+    if (length(y) == 0) {
+      nr <- length(attr(y, "row.names")[i])
+    }
+    else {
+      y <- lapply(y, `[`, i)
+      nr <- length(y[[1]])
+    }
+  }
+  attr(y, "row.names") <- .set_row_names(nr)
+  res <- .as_data_frame.data.frame(y)
+}
+
+#' .check_names_df function from tibble package
+.check_names_df <- function(x,j){
+  if (is.character(j) && any(wrong <- !j %in% names(x))) {
+    names <- j[wrong]
+    stop(sprintf("undefined columns: %s", paste(names, collapse = ", ")))
+  }
+}
+
+#' as_data_frame.data.frame function from the tibble package
+.as_data_frame.data.frame <- function (x, ...) 
+{
+  class(x) <- c("tbl_df", "tbl", "data.frame")
+  x
 }

@@ -4,10 +4,10 @@
 \alias{getVector}
 \title{A function for returning a named vector from a data frame or matrix with row names}
 \usage{
-getVector(dat, ...)
+getVector(td, ...)
 }
 \arguments{
-\item{dat}{A data frame or matrix with row names}
+\item{td}{A treedata object}
 
 \item{...}{The name of the column to select}
 }

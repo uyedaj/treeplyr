@@ -27,8 +27,8 @@ This function allows arbitrary R functions that use trees and data to be run on
 \examples{
 data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
-treedply(td, geiger::fitContinuous(phy, getVector(dat, SVL), model="BM", ncores=1))
-treedply(td, phytools::phylosig(phy, getVector(dat, awesomeness), "lambda", test=TRUE))
-treedply(td, phytools::phenogram(phy, getVector(dat, SVL), ftype="off", spread.labels=FALSE))
+treedply(td, geiger::fitContinuous(phy, getVector(td, SVL), model="BM", ncores=1))
+treedply(td, phytools::phylosig(phy, getVector(td, awesomeness), "lambda", test=TRUE))
+treedply(td, phytools::phenogram(phy, getVector(td, SVL), ftype="off", spread.labels=FALSE))
 }
 

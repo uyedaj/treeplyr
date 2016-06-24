@@ -81,7 +81,7 @@ summary(td)
 ## Source: local data frame [40 x 7]
 ## 
 ##            X1          X2         X3     D1    D2    D3  XNA1
-##         (dbl)       (dbl)      (dbl) (fctr) (int) (dbl) (dbl)
+##         <dbl>       <dbl>      <dbl> <fctr> <int> <dbl> <dbl>
 ## 1  -0.5425200 -1.91435943 -0.1771040  World     1   0.3    NA
 ## 2   1.2078678  1.17658331  0.4020118  Hello     0   2.3    NA
 ## 3   1.1604026 -1.66497244 -0.7317482  World     0   2.3    NA
@@ -93,6 +93,93 @@ summary(td)
 ## 9  -1.2246126 -1.28630053  0.4119747  World     0   2.3    NA
 ## 10 -0.4734006 -1.64060553 -0.3810761  Hello     1   1.3    NA
 ## ..        ...         ...        ...    ...   ...   ...   ...
+```
+
+We can also use indices directly on the treedata object, but note that these drop the tree:
+
+```r
+td[[1]]
+```
+
+```
+##          s1          s2          s3          s4          s5          s6 
+## -0.54252003  1.20786781  1.16040262  0.70021365  1.58683345  0.55848643 
+##          s7          s8          s9         s10         s11         s12 
+## -1.27659221 -0.57326541 -1.22461261 -0.47340064 -0.62036668  0.04211587 
+##         s13         s14         s15         s16         s17         s18 
+## -0.91092165  0.15802877 -0.65458464  1.76728727  0.71670748  0.91017423 
+##         s19         s20         s21         s22         s23         s24 
+##  0.38418536  1.68217608 -0.63573645 -0.46164473  1.43228224 -0.65069635 
+##         s25         s26         s27         s28         s29         s30 
+## -0.20738074 -0.39280793 -0.31999287 -0.27911330  0.49418833 -0.17733048 
+##         s31         s32         s33         s34         s35         s36 
+## -0.50595746  1.34303883 -0.21457941 -0.17955653 -0.10019074  0.71266631 
+##         s37         s38         s39         s40 
+## -0.07356440 -0.03763417 -0.68166048 -0.32427027
+```
+
+```r
+td[['X1']]
+```
+
+```
+##          s1          s2          s3          s4          s5          s6 
+## -0.54252003  1.20786781  1.16040262  0.70021365  1.58683345  0.55848643 
+##          s7          s8          s9         s10         s11         s12 
+## -1.27659221 -0.57326541 -1.22461261 -0.47340064 -0.62036668  0.04211587 
+##         s13         s14         s15         s16         s17         s18 
+## -0.91092165  0.15802877 -0.65458464  1.76728727  0.71670748  0.91017423 
+##         s19         s20         s21         s22         s23         s24 
+##  0.38418536  1.68217608 -0.63573645 -0.46164473  1.43228224 -0.65069635 
+##         s25         s26         s27         s28         s29         s30 
+## -0.20738074 -0.39280793 -0.31999287 -0.27911330  0.49418833 -0.17733048 
+##         s31         s32         s33         s34         s35         s36 
+## -0.50595746  1.34303883 -0.21457941 -0.17955653 -0.10019074  0.71266631 
+##         s37         s38         s39         s40 
+## -0.07356440 -0.03763417 -0.68166048 -0.32427027
+```
+
+```r
+td[1:10,1:2]
+```
+
+```
+## Source: local data frame [10 x 2]
+## 
+##            X1          X2
+##         <dbl>       <dbl>
+## 1  -0.5425200 -1.91435943
+## 2   1.2078678  1.17658331
+## 3   1.1604026 -1.66497244
+## 4   0.7002136 -0.46353040
+## 5   1.5868335 -1.11592011
+## 6   0.5584864 -0.75081900
+## 7  -1.2765922  2.08716655
+## 8  -0.5732654  0.01739562
+## 9  -1.2246126 -1.28630053
+## 10 -0.4734006 -1.64060553
+```
+For single brackets ('[]'), we can specify that we want to keep the tip labels:
+
+```r
+td[1:10, 1, tip.label=TRUE]
+```
+
+```
+## Source: local data frame [10 x 2]
+## 
+##    tip.label         X1
+##       <fctr>      <dbl>
+## 1         s1 -0.5425200
+## 2         s2  1.2078678
+## 3         s3  1.1604026
+## 4         s4  0.7002136
+## 5         s5  1.5868335
+## 6         s6  0.5584864
+## 7         s7 -1.2765922
+## 8         s8 -0.5732654
+## 9         s9 -1.2246126
+## 10       s10 -0.4734006
 ```
 
 ## II. The Basics: Reorder, Select, Filter, & Mutate
@@ -126,7 +213,7 @@ select(td, X1, D1)
 ## Source: local data frame [40 x 2]
 ## 
 ##            X1     D1
-##         (dbl) (fctr)
+##         <dbl> <fctr>
 ## 1  -0.5425200  World
 ## 2   1.2078678  Hello
 ## 3   1.1604026  World
@@ -158,7 +245,7 @@ select(td, 1:3)
 ## Source: local data frame [40 x 3]
 ## 
 ##            X1          X2         X3
-##         (dbl)       (dbl)      (dbl)
+##         <dbl>       <dbl>      <dbl>
 ## 1  -0.5425200 -1.91435943 -0.1771040
 ## 2   1.2078678  1.17658331  0.4020118
 ## 3   1.1604026 -1.66497244 -0.7317482
@@ -190,7 +277,7 @@ select(td, 1, 4, 6)
 ## Source: local data frame [40 x 3]
 ## 
 ##            X1     D1    D3
-##         (dbl) (fctr) (dbl)
+##         <dbl> <fctr> <dbl>
 ## 1  -0.5425200  World   0.3
 ## 2   1.2078678  Hello   2.3
 ## 3   1.1604026  World   2.3
@@ -227,7 +314,7 @@ filter(td, X1 > 0, D1=="Hello", is.na(XNA1)==FALSE)
 ## Source: local data frame [6 x 7]
 ## 
 ##          X1          X2          X3     D1    D2    D3       XNA1
-##       (dbl)       (dbl)       (dbl) (fctr) (int) (dbl)      (dbl)
+##       <dbl>       <dbl>       <dbl> <fctr> <int> <dbl>      <dbl>
 ## 1 0.1580288 -0.92936215 -0.33090780  Hello     0   0.3 -1.2941400
 ## 2 1.7672873 -1.07519230  2.49766159  Hello     0   1.3  1.3079015
 ## 3 0.7167075  1.00002880  0.66706617  Hello     1   0.3  1.4970410
@@ -254,7 +341,7 @@ filter(td, X1 + X2 > 0 & D1 == "Hello")
 ## Source: local data frame [9 x 7]
 ## 
 ##           X1          X2          X3     D1    D2    D3         XNA1
-##        (dbl)       (dbl)       (dbl) (fctr) (int) (dbl)        (dbl)
+##        <dbl>       <dbl>       <dbl> <fctr> <int> <dbl>        <dbl>
 ## 1  1.2078678  1.17658331  0.40201178  Hello     0   2.3           NA
 ## 2 -1.2765922  2.08716655  1.44115771  Hello     0   1.3           NA
 ## 3  1.7672873 -1.07519230  2.49766159  Hello     0   1.3  1.307901520
@@ -288,7 +375,7 @@ mutate(td, Xall = (X1+X2+X3)/3, D1.binary = as.numeric(D1)-1)
 ## Source: local data frame [40 x 9]
 ## 
 ##            X1          X2         X3     D1    D2    D3  XNA1       Xall
-##         (dbl)       (dbl)      (dbl) (fctr) (int) (dbl) (dbl)      (dbl)
+##         <dbl>       <dbl>      <dbl> <fctr> <int> <dbl> <dbl>      <dbl>
 ## 1  -0.5425200 -1.91435943 -0.1771040  World     1   0.3    NA -0.8779945
 ## 2   1.2078678  1.17658331  0.4020118  Hello     0   2.3    NA  0.9288210
 ## 3   1.1604026 -1.66497244 -0.7317482  World     0   2.3    NA -0.4121060
@@ -300,7 +387,7 @@ mutate(td, Xall = (X1+X2+X3)/3, D1.binary = as.numeric(D1)-1)
 ## 9  -1.2246126 -1.28630053  0.4119747  World     0   2.3    NA -0.6996461
 ## 10 -0.4734006 -1.64060553 -0.3810761  Hello     1   1.3    NA -0.8316941
 ## ..        ...         ...        ...    ...   ...   ...   ...        ...
-## Variables not shown: D1.binary (dbl)
+## Variables not shown: D1.binary <dbl>.
 ```
 
 ## III. Programmatic use
@@ -333,7 +420,7 @@ select_(td, .dots=as.list(mytraits))
 ## Source: local data frame [40 x 2]
 ## 
 ##            X1     D1
-##         (dbl) (fctr)
+##         <dbl> <fctr>
 ## 1  -0.5425200  World
 ## 2   1.2078678  Hello
 ## 3   1.1604026  World
@@ -368,7 +455,7 @@ filter_(td, .dots=criteria)
 ## Source: local data frame [3 x 7]
 ## 
 ##           X1          X2         X3     D1    D2    D3  XNA1
-##        (dbl)       (dbl)      (dbl) (fctr) (int) (dbl) (dbl)
+##        <dbl>       <dbl>      <dbl> <fctr> <int> <dbl> <dbl>
 ## 1  1.2078678  1.17658331  0.4020118  Hello     0   2.3    NA
 ## 2 -0.5732654  0.01739562 -1.0158475  Hello     0   1.3    NA
 ## 3 -0.4734006 -1.64060553 -0.3810761  Hello     1   1.3    NA
@@ -396,7 +483,7 @@ select(td, starts_with("D"))
 ## Source: local data frame [40 x 3]
 ## 
 ##        D1    D2    D3
-##    (fctr) (int) (dbl)
+##    <fctr> <int> <dbl>
 ## 1   World     1   0.3
 ## 2   Hello     0   2.3
 ## 3   World     0   2.3
@@ -428,7 +515,7 @@ select(td, ends_with("1"))
 ## Source: local data frame [40 x 3]
 ## 
 ##            X1     D1  XNA1
-##         (dbl) (fctr) (dbl)
+##         <dbl> <fctr> <dbl>
 ## 1  -0.5425200  World    NA
 ## 2   1.2078678  Hello    NA
 ## 3   1.1604026  World    NA
@@ -447,31 +534,9 @@ select(td, matches("NA"))
 ```
 
 ```
-## $phy 
-## 
-## Phylogenetic tree with 40 tips and 39 internal nodes.
-## 
-## Tip labels:
-## 	s1, s2, s3, s4, s5, s6, ...
-## 
-## Rooted; includes branch lengths.
-## 
-## $dat 
-## Source: local data frame [40 x 1]
-## 
-##     XNA1
-##    (dbl)
-## 1     NA
-## 2     NA
-## 3     NA
-## 4     NA
-## 5     NA
-## 6     NA
-## 7     NA
-## 8     NA
-## 9     NA
-## 10    NA
-## ..   ...
+## Error: All select() inputs must resolve to integer column positions.
+## The following do not:
+## *  matches("NA")
 ```
 
 ```r
@@ -492,7 +557,7 @@ select(td, contains("NA"))
 ## Source: local data frame [40 x 1]
 ## 
 ##     XNA1
-##    (dbl)
+##    <dbl>
 ## 1     NA
 ## 2     NA
 ## 3     NA
@@ -524,7 +589,7 @@ select(td, which(sapply(td$dat, type_sum)=="int"))
 ## Source: local data frame [40 x 1]
 ## 
 ##       D2
-##    (int)
+##    <int>
 ## 1      1
 ## 2      0
 ## 3      0
@@ -545,31 +610,7 @@ select(td, -matches("NA"))
 ```
 
 ```
-## $phy 
-## 
-## Phylogenetic tree with 40 tips and 39 internal nodes.
-## 
-## Tip labels:
-## 	s1, s2, s3, s4, s5, s6, ...
-## 
-## Rooted; includes branch lengths.
-## 
-## $dat 
-## Source: local data frame [40 x 6]
-## 
-##            X1          X2         X3     D1    D2    D3
-##         (dbl)       (dbl)      (dbl) (fctr) (int) (dbl)
-## 1  -0.5425200 -1.91435943 -0.1771040  World     1   0.3
-## 2   1.2078678  1.17658331  0.4020118  Hello     0   2.3
-## 3   1.1604026 -1.66497244 -0.7317482  World     0   2.3
-## 4   0.7002136 -0.46353040  0.8303732  World     0   0.3
-## 5   1.5868335 -1.11592011 -1.2080828  World     0   0.3
-## 6   0.5584864 -0.75081900 -1.0479844  World     0   0.3
-## 7  -1.2765922  2.08716655  1.4411577  Hello     0   1.3
-## 8  -0.5732654  0.01739562 -1.0158475  Hello     0   1.3
-## 9  -1.2246126 -1.28630053  0.4119747  World     0   2.3
-## 10 -0.4734006 -1.64060553 -0.3810761  Hello     1   1.3
-## ..        ...         ...        ...    ...   ...   ...
+## Error in -matches("NA"): invalid argument to unary operator
 ```
 
 ```r
@@ -590,7 +631,7 @@ select(td, -starts_with("X"))
 ## Source: local data frame [40 x 3]
 ## 
 ##        D1    D2    D3
-##    (fctr) (int) (dbl)
+##    <fctr> <int> <dbl>
 ## 1   World     1   0.3
 ## 2   Hello     0   2.3
 ## 3   World     0   2.3
@@ -609,7 +650,7 @@ In many cases, the user may simply want to split apart the treedata object after
 For example, we could measure phylogenetic signal in our trait *X1*:
 
 ```r
-phytools::phylosig(td$phy, getVector(td$dat, X1))
+phytools::phylosig(td$phy, getVector(td, X1))
 ```
 
 ```
@@ -620,7 +661,7 @@ phytools::phylosig(td$phy, getVector(td$dat, X1))
 You can also run it directly on the treedata object using the function treedply:
 
 ```r
-treedply(td, phytools::phylosig(phy, getVector(dat, X1), "K"))
+treedply(td, phytools::phylosig(phy, getVector(td, X1), "K"))
 ```
 
 ```
@@ -631,8 +672,8 @@ treedply(td, phytools::phylosig(phy, getVector(dat, X1), "K"))
 Or multiple functions at once: 
 
 ```r
-treedply(td, list("K" = phytools::phylosig(phy, getVector(dat, X1), "K"),
-                  "lambda" = phytools::phylosig(phy, getVector(dat, X1), "lambda"))
+treedply(td, list("K" = phytools::phylosig(phy, getVector(td, X1), "K"),
+                  "lambda" = phytools::phylosig(phy, getVector(td, X1), "lambda"))
          )
 ```
 
@@ -691,23 +732,28 @@ par(mfrow=c(2,3))
 tdapply(tdNumeric, 2, phytools::phenogram, tree=phy, spread.labels=FALSE, ftype="off")
 ```
 
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
+```
+## Error in plot.window(...): need finite 'ylim' values
+```
 
-```
-##   X1   X2   X3   D2   D3 XNA1 
-##    0    0    0    0    0    0
-```
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
 
 Or you could fit all traits to a BM model and then pull out the sigsq parameter:
 
 ```r
 fitsBM <- tdapply(tdNumeric, 2, geiger::fitContinuous, phy=phy, model="BM")
+```
+
+```
+## Error in treedata(phy, dat): names for 'data' must be supplied
+```
+
+```r
 sapply(fitsBM, function(x) x$opt$sigsq)
 ```
 
 ```
-##         X1         X2         X3         D2         D3       XNA1 
-##  5.3712587  3.9081367 11.1951598  0.9168851 19.4370364  8.8442750
+## Error in lapply(X = X, FUN = FUN, ...): object 'fitsBM' not found
 ```
 
 Perhaps more elegantly, you could use pipes to chain all of these operations together:
@@ -719,6 +765,15 @@ td %>% filter(., !is.na(XNA1)) %>% forceNumeric(.) %>% tdapply(., 2, phytools::p
 ```
 ## Warning in forceNumeric(.): Not all data continuous, dropping non-numeric
 ## data columns: D1
+```
+
+```
+## [1] "x has no names; assuming x is in the same order as tree$tip.label"
+## [1] "x has no names; assuming x is in the same order as tree$tip.label"
+## [1] "x has no names; assuming x is in the same order as tree$tip.label"
+## [1] "x has no names; assuming x is in the same order as tree$tip.label"
+## [1] "x has no names; assuming x is in the same order as tree$tip.label"
+## [1] "x has no names; assuming x is in the same order as tree$tip.label"
 ```
 
 ```
@@ -737,7 +792,7 @@ plot(td$phy)
 plot(td.OU10$phy)
 ```
 
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
+![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
 
 Or we could drop tips from the tree (here we drop tips from 1 to 35).
 
@@ -759,7 +814,7 @@ treeply(td, drop.tip, c(1:35))
 ## Source: local data frame [5 x 7]
 ## 
 ##            X1          X2         X3     D1    D2    D3       XNA1
-##         (dbl)       (dbl)      (dbl) (fctr) (int) (dbl)      (dbl)
+##         <dbl>       <dbl>      <dbl> <fctr> <int> <dbl>      <dbl>
 ## 1  0.71266631 -0.03472603  1.8031419  Hello     1   1.3  0.7395892
 ## 2 -0.07356440  0.78763961 -0.3311320  World     0   0.3 -1.0634574
 ## 3 -0.03763417  2.07524501 -1.6055134  World     1   0.3  0.2462108
@@ -788,7 +843,7 @@ summarize(td.D1, mean(X1), sd(X1), mean(X2), sd(X2))
 ## Source: local data frame [2 x 5]
 ## 
 ##       D1   mean(X1)    sd(X1)    mean(X2)   sd(X2)
-##   (fctr)      (dbl)     (dbl)       (dbl)    (dbl)
+##   <fctr>      <dbl>     <dbl>       <dbl>    <dbl>
 ## 1  Hello 0.09735458 0.9546852  0.10771534 1.089466
 ## 2  World 0.07318464 0.7174964 -0.01201879 1.231206
 ```
@@ -805,7 +860,7 @@ summarise(td.D1, ntips = length(phy$tip.label),
 ## Source: local data frame [2 x 4]
 ## 
 ##       D1 ntips    psig.X1   psig.X2
-##   (fctr) (int)      (dbl)     (dbl)
+##   <fctr> <int>      <dbl>     <dbl>
 ## 1  Hello    17 0.05241561 0.2112923
 ## 2  World    23 0.29027126 0.3809347
 ```
@@ -822,7 +877,7 @@ summarise(td.D1, ntips = length(phy$tip.label),
 ## Source: local data frame [2 x 4]
 ## 
 ##       D1 ntips  totalTL varianceBL
-##   (fctr) (int)    (dbl)      (dbl)
+##   <fctr> <int>    <dbl>      <dbl>
 ## 1  Hello    17 18.23593  0.3182517
 ## 2  World    23 30.73710  0.5296092
 ```
@@ -839,7 +894,7 @@ summarise(td.D1, sigsq = geiger::fitContinuous(phy, setNames(X1, phy$tip.label))
 ## Source: local data frame [2 x 3]
 ## 
 ##       D1     sigsq       root
-##   (fctr)     (dbl)      (dbl)
+##   <fctr>     <dbl>      <dbl>
 ## 1  Hello 7.9724838 0.36027556
 ## 2  World 0.6679094 0.04721332
 ```
@@ -852,7 +907,7 @@ by using the function *paint_clades*.
 td.painted <- paint_clades(td, interactive=FALSE, type="nodes", ids=c(75, 66, 54, 48), plot=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29-1.png)
+![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
 
 Or alternatively, you can specify which clades you want to group interactively. In the case below, the user selects 4 clades 
 by clicking on the desired branches (i.e. when you run this script,YOU must click on 4 branches of your choosing 
@@ -874,7 +929,7 @@ summarise(td.painted, psig1 = phytools::phylosig(setNames(X1, phy$tip.label), tr
 ## Source: local data frame [5 x 5]
 ## 
 ##   clades      psig1      meanX1      sdX1 ntips
-##    (dbl)      (dbl)       (dbl)     (dbl) (int)
+##    <dbl>      <dbl>       <dbl>     <dbl> <int>
 ## 1      1 0.27062158  0.40655789 0.9238538     7
 ## 2      2 0.27862586 -0.08410896 0.4587212     6
 ## 3      3 0.03721839 -0.04394916 0.5549763    10

@@ -25,6 +25,13 @@ td <- make.treedata(tree, dat)
 ## We can use summary to display information about our treedata object. 
 summary(td)
 
+## We can also use indices directly on the treedata object, but note that these drop the tree:
+td[[1]]
+td[['X1']]
+td[1:10,1:2]
+## For single brackets ('[]'), we can specify that we want to keep the tip labels:
+td[1:10, 1, tip.label=TRUE]
+
 ## ## II. The Basics: Reorder, Select, Filter, & Mutate
 ## ### *reorder*
 ## The treedata object itself is made up of a list of two elements *$phy* giving the tree and *$dat* providing in the data. One operation
@@ -80,16 +87,16 @@ select(td, -starts_with("X"))
 ## ## IV. Applying functions to treedata objects: treeply, treedply and tdapply
 ## In many cases, the user may simply want to split apart the treedata object after matching and proceed in their analyses as normal. 
 ## For example, we could measure phylogenetic signal in our trait *X1*:
-phytools::phylosig(td$phy, getVector(td$dat, X1))
+phytools::phylosig(td$phy, getVector(td, X1))
 
 ## ### *treedply*
 ## You can also run it directly on the treedata object using the function treedply:
-treedply(td, phytools::phylosig(phy, getVector(dat, X1), "K"))
+treedply(td, phytools::phylosig(phy, getVector(td, X1), "K"))
 
         
 ## Or multiple functions at once: 
-treedply(td, list("K" = phytools::phylosig(phy, getVector(dat, X1), "K"),
-                  "lambda" = phytools::phylosig(phy, getVector(dat, X1), "lambda"))
+treedply(td, list("K" = phytools::phylosig(phy, getVector(td, X1), "K"),
+                  "lambda" = phytools::phylosig(phy, getVector(td, X1), "lambda"))
          )
 
 ## ### *forceFactor* & *forceNumeric*

@@ -1,7 +1,7 @@
 Package: treeplyr
 Type: Package
 Title: 'dplyr' Functionality for Matched Tree and Data Objects
-Version: 0.1.1
+Version: 0.1.2
 Date: 2016-02-28
 Author: Josef Uyeda
 Maintainer: Josef Uyeda <josef.uyeda@gmail.com>
