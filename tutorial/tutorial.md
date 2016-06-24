@@ -732,28 +732,82 @@ par(mfrow=c(2,3))
 tdapply(tdNumeric, 2, phytools::phenogram, tree=phy, spread.labels=FALSE, ftype="off")
 ```
 
-```
-## Error in plot.window(...): need finite 'ylim' values
-```
-
 ![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
+
+```
+##       X1 X2 X3 D2 D3 XNA1
+##  [1,] NA NA NA NA NA   NA
+##  [2,] NA NA NA NA NA   NA
+##  [3,] NA NA NA NA NA   NA
+##  [4,] NA NA NA NA NA   NA
+##  [5,] NA NA NA NA NA   NA
+##  [6,] NA NA NA NA NA   NA
+##  [7,] NA NA NA NA NA   NA
+##  [8,] NA NA NA NA NA   NA
+##  [9,] NA NA NA NA NA   NA
+## [10,] NA NA NA NA NA   NA
+## [11,] NA NA NA NA NA   NA
+## [12,] NA NA NA NA NA   NA
+## [13,] NA NA NA NA NA   NA
+## [14,] NA NA NA NA NA   NA
+## [15,] NA NA NA NA NA   NA
+## [16,] NA NA NA NA NA   NA
+## [17,] NA NA NA NA NA   NA
+## [18,] NA NA NA NA NA   NA
+## [19,] NA NA NA NA NA   NA
+## [20,] NA NA NA NA NA   NA
+## [21,] NA NA NA NA NA   NA
+## [22,] NA NA NA NA NA   NA
+## [23,] NA NA NA NA NA   NA
+## [24,] NA NA NA NA NA   NA
+## [25,] NA NA NA NA NA   NA
+## [26,] NA NA NA NA NA   NA
+## [27,] NA NA NA NA NA   NA
+## [28,] NA NA NA NA NA   NA
+## [29,] NA NA NA NA NA   NA
+## [30,] NA NA NA NA NA   NA
+## [31,] NA NA NA NA NA   NA
+## [32,] NA NA NA NA NA   NA
+## [33,] NA NA NA NA NA   NA
+## [34,] NA NA NA NA NA   NA
+## [35,] NA NA NA NA NA   NA
+## [36,] NA NA NA NA NA   NA
+## [37,] NA NA NA NA NA   NA
+## [38,] NA NA NA NA NA   NA
+## [39,] NA NA NA NA NA   NA
+## [40,] NA NA NA NA NA   NA
+## [41,] NA NA NA NA NA   NA
+## [42,] NA NA NA NA NA   NA
+## [43,] NA NA NA NA NA   NA
+## [44,] NA NA NA NA NA   NA
+## [45,] NA NA NA NA NA   NA
+## [46,] NA NA NA NA NA   NA
+## [47,] NA NA NA NA NA   NA
+## [48,] NA NA NA NA NA   NA
+## [49,] NA NA NA NA NA   NA
+## [50,] NA NA NA NA NA   NA
+## [51,] NA NA NA NA NA   NA
+## [52,] NA NA NA NA NA   NA
+## [53,] NA NA NA NA NA   NA
+## [54,] NA NA NA NA NA   NA
+## [55,] NA NA NA NA NA   NA
+## [56,] NA NA NA NA NA   NA
+## [57,] NA NA NA NA NA   NA
+## [58,] NA NA NA NA NA   NA
+## [59,] NA NA NA NA NA   NA
+## [60,] NA NA NA NA NA   NA
+```
 
 Or you could fit all traits to a BM model and then pull out the sigsq parameter:
 
 ```r
 fitsBM <- tdapply(tdNumeric, 2, geiger::fitContinuous, phy=phy, model="BM")
-```
-
-```
-## Error in treedata(phy, dat): names for 'data' must be supplied
-```
-
-```r
 sapply(fitsBM, function(x) x$opt$sigsq)
 ```
 
 ```
-## Error in lapply(X = X, FUN = FUN, ...): object 'fitsBM' not found
+##         X1         X2         X3         D2         D3       XNA1 
+##  5.3712587  3.9081367 11.1951598  0.9168851 19.4370364  8.8442750
 ```
 
 Perhaps more elegantly, you could use pipes to chain all of these operations together:
@@ -765,15 +819,6 @@ td %>% filter(., !is.na(XNA1)) %>% forceNumeric(.) %>% tdapply(., 2, phytools::p
 ```
 ## Warning in forceNumeric(.): Not all data continuous, dropping non-numeric
 ## data columns: D1
-```
-
-```
-## [1] "x has no names; assuming x is in the same order as tree$tip.label"
-## [1] "x has no names; assuming x is in the same order as tree$tip.label"
-## [1] "x has no names; assuming x is in the same order as tree$tip.label"
-## [1] "x has no names; assuming x is in the same order as tree$tip.label"
-## [1] "x has no names; assuming x is in the same order as tree$tip.label"
-## [1] "x has no names; assuming x is in the same order as tree$tip.label"
 ```
 
 ```

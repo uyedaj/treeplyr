@@ -352,7 +352,9 @@ tdapply <- function(tdObject, MARGIN, FUN, ...){
   phy <- tdObject$phy
   env <- new.env(parent=parent.frame(), size=1L)
   env$phy <- tdObject$phy
-  res <- eval(substitute(apply(tdObject$dat, MARGIN, FUN, ...)), env)
+  dat <- as.matrix(tdObject$dat)
+  rownames(dat) <- tdObject$phy$tip.label
+  res <- eval(substitute(apply(dat, MARGIN, FUN, ...)), env)
   return(res)
 }
 
