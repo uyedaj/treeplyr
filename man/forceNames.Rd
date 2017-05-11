@@ -23,4 +23,3 @@ Force names for rows, columns, or both
 data(anolis)
 forceNames(anolis$dat, "row")
 }
-

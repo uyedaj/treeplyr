@@ -23,4 +23,3 @@ Apply detectCharacterType over an entire matrix
 data(anolis)
 detectAllCharacters(anolis$dat)
 }
-

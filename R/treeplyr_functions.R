@@ -109,7 +109,7 @@ mutate_.treedata <- function(.data, ..., .dots){
 #' This function can be used to select a subset of variables (columns) from a treedata object; 
 #' see \code{\link{select}}.
 #' 
-#' @aliases select.treedata select.grouped_treedata select_.grouped_treedata
+#' @aliases select_.grouped_treedata
 #' @param .data An object of class \code{treedata}
 #' @param ... Additional arguments to select columns
 #' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
@@ -120,12 +120,33 @@ mutate_.treedata <- function(.data, ..., .dots){
 #' td <- make.treedata(anolis$phy, anolis$dat)
 #' tdselect <- select(td, SVL, awesomeness)
 #' @export
-select_.treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ...)
-  vars <- select_vars_(names(.data$dat), dots)
-  dat <- .data$dat[, vars, drop = FALSE]
+select_.treedata <- function(.data, ..., .dots = list()){
+   dat <- .data$dat
+  .data$dat <- select_(dat, ..., .dots=.dots)
+  return(.data)
+}
+
+#' Function for selecting columns from an object of class \code{treedata}
+#' 
+#' This function can be used to select a subset of variables (columns) from a treedata object; 
+#' see \code{\link{select}}.
+#' 
+#' @aliases select.grouped_treedata
+#' @param .data An object of class \code{treedata}
+#' @param ... Additional arguments to select columns
+#' @return An object of class \code{treedata} with specified variables selected. 
+#' @seealso \code{\link{select_}}
+#' @examples
+#' data(anolis)
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' tdselect <- select(td, SVL, awesomeness)
+#' @export
+select.treedata <- function(.data, ...){
+  #dots <- all_dots(.dots, ...)
+  #dat <- select(.data$dat, ...) #select_vars(names(.data$dat), !(!(!quos(...))))
+  #dat <- .data$dat[, vars, drop = FALSE]
   #row.names(dat) <- attributes(.data)$tip.label
-  .data$dat <- dat
+  .data$dat <- select(.data$dat, ...)
   return(.data)
 }
 
@@ -147,25 +168,25 @@ select_.treedata <- function(.data, ..., .dots){
 #' @export
 filter_.treedata <- function(.data, ..., .dots){
   dots <- lazyeval::all_dots(.dots, ...)
-  .data$dat <- mutate(.data$dat, tip.label=attributes(.data)$tip.label)
+  tip.labels <- attributes(.data)$tip.label
+  .data$dat <- mutate(.data$dat, tip.label=tip.labels)
   dat <- filter_(.data$dat, .dots = dots)
   .data$dat <- dat
   attributes(.data)$tip.label <- .data$dat$tip.label
-  .data$dat <- select(.data$dat, 1:(ncol(.data$dat)-1))
+  nc <- ncol(.data$dat)
+  .data$dat <- select(.data$dat, 1:(nc-1))
   .data$phy <- drop.tip(.data$phy, .data$phy$tip.label[!(.data$phy$tip.label %in% attributes(.data)$tip.label)])
   #attributes(.data$dat)$row.names <- .data$phy$tip.label
   return(.data)
 }
 
-
 #' Function for summarizing an object of class \code{treedata}
 #' 
 #' This function can be used to summarize a treedata object. 
 #' 
-#' @aliases summarize.treedata summarize_.treedata summarise_.treedata summarize_.grouped_treedata summarise_.grouped_treedata
+#' @aliases summarize.treedata summarize.grouped_treedata summarise.grouped_treedata
 #' @param .data An object of class \code{treedata}
 #' @param ... Additional expressions by which to summarize data in the \code{treedata} object
-#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
 #' @details Summarizing \code{treedata} objects allows expressions using the objects \code{phy}. The \code{treedata}
 #' object can also be grouped, with summary statistics being applied to the pruned groups and phylogenies. 
 #' @return An object of class \code{tbl_df} with the requested summary data.
@@ -178,43 +199,81 @@ filter_.treedata <- function(.data, ..., .dots){
 #' summarize(tdGrouped, ntips = length(phy$tip.label), 
 #'    totalBL = sum(phy$edge.length), meanSVL = mean(SVL), sdSVL = sd(SVL))
 #' @export
-summarise_.treedata <- function(.data, ..., .dots){
-  #if(is.null(list(substitute(...))[[1]])) stop("No expression provided to summarize data")
-  dots <- lazyeval::all_dots(.dots, ..., all_named = TRUE)
+summarise.treedata <- function(.data, ...){
   env <- new.env(parent = parent.frame(), size = 1L)
   env$phy <- .data$phy
   env$dat <- as.data.frame(.data$dat)
   env$tip.label <- .data$phy$tip.label
-  #rownames(env$dat) <- env$phy$tip.label
+  dots <- quos(...)
   for(i in 1:length(dots)){
-    dots[[i]]$env <- env
+    attributes(dots[[i]])$.Environment <- env
   }
-  res <- summarise_(.data$dat, .dots = dots)
-  return(res)
+  summarise(env$dat, !!!dots)
 }
 
-#' @rdname summarise_.treedata
-#' @export
-summarise_.grouped_treedata <- function(.data, ..., .dots){
+
+# Function for summarizing an object of class \code{treedata}
+# 
+# This function can be used to summarize a treedata object. 
+# 
+# @aliases summarise_.treedata summarize_.grouped_treedata summarise_.grouped_treedata
+# @param .data An object of class \code{treedata}
+# @param ... Additional expressions by which to summarize data in the \code{treedata} object
+# @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
+# @details Summarizing \code{treedata} objects allows expressions using the objects \code{phy}. The \code{treedata}
+# object can also be grouped, with summary statistics being applied to the pruned groups and phylogenies. 
+# @return An object of class \code{tbl_df} with the requested summary data.
+# @seealso \code{\link{summarize}}, \code{\link{group_by}}
+# @examples
+# data(anolis)
+# td <- make.treedata(anolis$phy, anolis$dat)
+# summarize(td, ntips = length(phy$tip.label), meanSVL = mean(SVL), sdSVL = sd(SVL))
+# tdGrouped <- group_by(td, ecomorph)
+# summarize(tdGrouped, ntips = length(phy$tip.label), 
+#    totalBL = sum(phy$edge.length), meanSVL = mean(SVL), sdSVL = sd(SVL))
+# @export
+#summarise_.treedata <- function(.data, ..., .dots=list()){
   #if(is.null(list(substitute(...))[[1]])) stop("No expression provided to summarize data")
-  dots <- lazyeval::all_dots(.dots, ..., all_named = TRUE)
+#  dots <- lazyeval::all_dots(.dots, ..., all_named = TRUE)
+#  env <- new.env(parent = parent.frame(), size = 1L)
+#  env$phy <- .data$phy
+#  env$dat <- as.data.frame(.data$dat)
+#  env$tip.label <- .data$phy$tip.label
+#  #rownames(env$dat) <- env$phy$tip.label
+#  for(i in 1:length(dots)){
+#    dots[[i]]$env <- env
+#  }
+#  res <- summarise_(.data$dat, .dots = dots)
+#  return(res)
+#}
+
+#' @rdname summarise.treedata
+#' @export
+summarise.grouped_treedata <- function(.data, ...){
+  #if(is.null(list(substitute(...))[[1]])) stop("No expression provided to summarize data")
+  dots <- quos(...)
+  #lazyeval::all_dots(.dots, ..., all_named = TRUE)
   nind <- (1:nrow(.data$dat))
   group_levels <- attributes(.data$dat)$labels[[1]]
   group_by_var <- colnames(attributes(.data$dat)$labels)[1]
   phys <- lapply(attributes(.data$dat)$indices, function(x) drop.tip(.data$phy, nind[!(nind %in% (x+1))]))
-  tds <- lapply(group_levels, function(x) filter_(.data, paste(group_by_var, "=='", x,"'", sep="")))
-  envs <- lapply(1:length(group_levels), function(x){e <- new.env(parent=parent.frame(), size=1L);
+  dat <- as.data.frame(.data$dat)
+  rownames(dat) <- attributes(.data)$tip.label
+  dats <- lapply(phys, function(x) make.treedata(x, dat)$dat)
+  envs <- lapply(group_levels, function(x){e <- new.env(parent=parent.frame(), size=1L);
                                                       e$phy <- phys[[x]];
-                                                      e$dat <- tds[[x]]$dat;
+                                                      e$dat <- dats[[x]];
                                                       e})
   OUT <- NULL
-  for(j in 1:length(group_levels)){
-    for(i in 1:length(dots)){
-      dots[[i]]$env <- envs[[j]]
+  for(i in 1:length(envs)){
+    edots <- dots
+    for(j in 1:length(edots)){
+      attributes(edots[[j]])$.Environment <- envs[[i]]
     }
-    res <- summarise_(tds[[j]]$dat, .dots = dots)
-    OUT <- rbind(OUT, res)
-  }  
+   OUT <- rbind(OUT, summarise(envs[[i]]$dat, !!! edots))
+  }
+  OUT <- data.frame(group_levels, OUT)
+  colnames(OUT)[1] <- group_by_var
   return(OUT)
 }
 
@@ -225,7 +284,6 @@ summarise_.grouped_treedata <- function(.data, ..., .dots){
 #' @aliases group_by.treedata
 #' @param .data An object of class \code{treedata}
 #' @param ... The name of the grouping factor.
-#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
 #' @param add By default, when add = FALSE, group_by will override existing groups. 
 #' To instead add to the existing groups, use add = TRUE
 #' @param x An object of class \code{treedata}
@@ -239,9 +297,8 @@ summarise_.grouped_treedata <- function(.data, ..., .dots){
 #' summarize(tdGrouped, ntips = length(phy$tip.label), 
 #'    totalBL = sum(phy$edge.length), meanSVL = mean(SVL), sdSVL = sd(SVL))
 #' @export
-group_by_.treedata <- function(.data, ..., .dots, add=FALSE){
-  
-  groups <- group_by_prepare(.data$dat, ..., .dots = .dots, add = add)
+group_by_.treedata <- function(.data, ..., add=FALSE){
+  groups <- group_by_prepare(.data$dat, ..., add = add)
   dat <- grouped_df(groups$data, groups$groups)
   .data$dat <- dat
   class(.data) <- c("grouped_treedata", "treedata", "list")

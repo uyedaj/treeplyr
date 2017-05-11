@@ -27,4 +27,3 @@ data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
 tdforcefactor <- forceFactor(td)
 }
-

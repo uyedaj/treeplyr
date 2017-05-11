@@ -29,4 +29,3 @@ and data remain intact. The object can be manipulated using \code{dplyr} functio
 data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
 }
-

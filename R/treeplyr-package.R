@@ -6,7 +6,7 @@
 #' @docType package
 #' @author Josef Uyeda
 #' @name treeplyr
-#' @useDynLib treeplyr
+#' @useDynLib treeplyr, .registration = TRUE
 #' @import ape dplyr Rcpp
 #' @importFrom lazyeval all_dots
 #' @importFrom phytools phylosig

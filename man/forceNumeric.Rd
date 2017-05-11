@@ -25,4 +25,3 @@ data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
 tdnumeric <- forceNumeric(td)
 }
-

@@ -29,4 +29,3 @@ data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
 td \%>\% forceNumeric(.) \%>\% tdapply(., 2, phytools::phylosig, tree=phy)
 }
-

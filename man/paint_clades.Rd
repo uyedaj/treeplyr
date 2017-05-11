@@ -39,4 +39,3 @@ summarise(td.painted,
              psig1 = phytools::phylosig(setNames(SVL, phy$tip.label), tree=phy), 
                    meanSVL = mean(SVL))
 }
-

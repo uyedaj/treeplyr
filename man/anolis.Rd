@@ -12,4 +12,3 @@ data(anolis)
 Anole data for aRbor functions
 }
 \keyword{datasets}
-

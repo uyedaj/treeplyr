@@ -87,16 +87,16 @@ select(td, -starts_with("X"))
 ## ## IV. Applying functions to treedata objects: treeply, treedply and tdapply
 ## In many cases, the user may simply want to split apart the treedata object after matching and proceed in their analyses as normal. 
 ## For example, we could measure phylogenetic signal in our trait *X1*:
-phytools::phylosig(td$phy, getVector(td, X1))
+phytools::phylosig(td$phy, td[['X1']])
 
 ## ### *treedply*
 ## You can also run it directly on the treedata object using the function treedply:
-treedply(td, phytools::phylosig(phy, getVector(td, X1), "K"))
+treedply(td, phytools::phylosig(phy, td[['X1']], "K"))
 
         
 ## Or multiple functions at once: 
-treedply(td, list("K" = phytools::phylosig(phy, getVector(td, X1), "K"),
-                  "lambda" = phytools::phylosig(phy, getVector(td, X1), "lambda"))
+treedply(td, list("K" = phytools::phylosig(phy, td[['X1']], "K"),
+                  "lambda" = phytools::phylosig(phy, td[['X1']], "lambda"))
          )
 
 ## ### *forceFactor* & *forceNumeric*
@@ -111,7 +111,8 @@ tdNumeric <- forceNumeric(td)
 tdNumeric <- filter(tdNumeric, !is.na(XNA1))
 
 ## ### *tdapply*
-## Then we can apply a function like *phenogram* to plot all the data:
+## Then we can apply a function like *phenogram* to plot all the data (A table of NA's is produced 
+## because of the request for output from the phenogram function that returns no values):
 par(mfrow=c(2,3))
 tdapply(tdNumeric, 2, phytools::phenogram, tree=phy, spread.labels=FALSE, ftype="off")
 
@@ -173,7 +174,7 @@ td.painted <- paint_clades(td, 4, interactive=TRUE)
 
 ## Now we group the phylogeny by the *clades* variable we just defined and calculate summary statistics for each group.
 td.painted <- group_by(td.painted, clades)
-summarise(td.painted, psig1 = phytools::phylosig(setNames(X1, phy$tip.label), tree=phy), 
+summarise(td.painted, ntips = length(phy$tip.label), psig1 = phytools::phylosig(setNames(X1, phy$tip.label), tree=phy), 
           meanX1 = mean(X1), sdX1 = sd(X1), ntips =length(phy$tip.label))
 
 ## Currently, the functions *treeply*, *treedply* and *tdapply* do not work with grouped data frames, and will analyze the 

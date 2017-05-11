@@ -23,4 +23,3 @@ Function to detect whether a character is continuous or discrete
 data(anolis)
 detectCharacterType(anolis$dat[,1])
 }
-

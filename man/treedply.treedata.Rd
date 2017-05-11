@@ -31,4 +31,3 @@ treedply(td, geiger::fitContinuous(phy, getVector(td, SVL), model="BM", ncores=1
 treedply(td, phytools::phylosig(phy, getVector(td, awesomeness), "lambda", test=TRUE))
 treedply(td, phytools::phenogram(phy, getVector(td, SVL), ftype="off", spread.labels=FALSE))
 }
-

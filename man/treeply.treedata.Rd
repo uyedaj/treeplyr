@@ -34,4 +34,3 @@ plot(td$phy)
 plot(td2$phy)
 
 }
-

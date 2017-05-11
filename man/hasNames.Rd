@@ -23,4 +23,3 @@ Row and column name check
 data(anolis)
 hasNames(anolis$dat, "row")
 }
-

@@ -17,4 +17,3 @@ A named vector
 \description{
 A function for returning a named vector from a data frame or matrix with row names
 }
-

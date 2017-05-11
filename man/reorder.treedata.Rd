@@ -33,4 +33,3 @@ td <- reorder(td, "postorder")
 \seealso{
 \code{\link{reorder.phylo}}
 }
-

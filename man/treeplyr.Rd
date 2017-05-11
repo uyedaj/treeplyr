@@ -12,4 +12,3 @@ manipulation of the tree and data using 'dplyr'.
 \author{
 Josef Uyeda
 }
-

@@ -24,4 +24,3 @@ data(anolis)
 aType<-detectAllCharacters(anolis$dat)
 filterMatrix(anolis$dat, aType, "discrete")
 }
-
