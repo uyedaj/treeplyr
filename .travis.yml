@@ -1,7 +1,4 @@
-language: r
-bioc_required: true
-sudo: required
-
+language: c
 
 env:
   - global:
