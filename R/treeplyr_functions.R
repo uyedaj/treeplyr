@@ -258,7 +258,7 @@ summarise.grouped_treedata <- function(.data, ...){
   group_by_var <- colnames(attributes(.data$dat)$labels)[1]
   phys <- lapply(attributes(.data$dat)$indices, function(x) drop.tip(.data$phy, nind[!(nind %in% (x+1))]))
   dat <- as.data.frame(.data$dat)
-  #rownames(dat) <- attributes(.data)$tip.label
+  rownames(dat) <- attributes(.data)$tip.label
   dats <- lapply(phys, function(x) make.treedata(x, dat)$dat)
   envs <- lapply(group_levels, function(x){e <- new.env(parent=parent.frame(), size=1L);
                                                       e$phy <- phys[[x]];
@@ -410,6 +410,7 @@ tdapply <- function(tdObject, MARGIN, FUN, ...){
   env <- new.env(parent=parent.frame(), size=1L)
   env$phy <- tdObject$phy
   dat <- as.matrix(tdObject$dat)
+  rownames(dat) <- phy$tip.label
   #rownames(dat) <- tdObject$phy$tip.label
   res <- eval(substitute(apply(dat, MARGIN, FUN, ...)), env)
   return(res)
