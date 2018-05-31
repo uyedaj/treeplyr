@@ -16,7 +16,14 @@ test_that("treedata can handle matrix/dataframe input", {
   expect_equal(td1$dat$SVL, td2$dat$SVL,  tolerance=0.000001)
   expect_equal(td1$dat$island, td2$dat$island)
   expect_equal(td3$dat$SVL, td4$dat$SVL,  tolerance=0.000001)
-  expect_equal(td3$phy$tip.label, rownames(td3$dat))
-  expect_equal(td4$phy$tip.label, rownames(td4$dat))
+  expect_true(all(td3$phy$tip.label %in%  anolis$dat[jacknife,'X']))
+  o3.1 <- order(td3$phy$tip.label)
+  o3.2 <- order(anolis$dat[jacknife,'X'])
+  expect_true(all(td3$dat$SVL[o3.1]==anolis$dat[jacknife,][o3.2, "SVL"]))
+  
+  expect_true(all(td4$phy$tip.label %in%  as.matrix(anolis$dat[jacknife,'X'])))
+  o3.1 <- order(td3$phy$tip.label)
+  o3.2 <- order(anolis$dat[jacknife,'X'])
+  expect_true(all(td3$dat$SVL[o3.1]==as.matrix(anolis$dat[jacknife,][o3.2, "SVL"])))
   
 })
