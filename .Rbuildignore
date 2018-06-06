@@ -8,3 +8,4 @@
 ^scratch.R
 ^\.travis.yml
 ^README.md
+^R/treeplyr_multiphylo\.R
