@@ -254,9 +254,9 @@ summarise.grouped_treedata <- function(.data, ...){
   dots <- quos(...)
   #lazyeval::all_dots(.dots, ..., all_named = TRUE)
   nind <- (1:nrow(.data$dat))
-  group_levels <- attributes(.data$dat)$labels[[1]]
-  group_by_var <- colnames(attributes(.data$dat)$labels)[1]
-  phys <- lapply(attributes(.data$dat)$indices, function(x) drop.tip(.data$phy, nind[!(nind %in% (x+1))]))
+  group_levels <- group_data(.data$dat)[[1]]
+  group_by_var <- group_vars(.data$dat)
+  phys <- lapply(group_indices(.data$dat), function(x) drop.tip(.data$phy, nind[!(nind %in% x)]))
   dat <- as.data.frame(.data$dat)
   rownames(dat) <- attributes(.data)$tip.label
   dats <- lapply(phys, function(x) make.treedata(x, dat)$dat)
@@ -265,7 +265,7 @@ summarise.grouped_treedata <- function(.data, ...){
                                                       e$dat <- dats[[x]];
                                                       e})
   OUT <- NULL
-  for(i in 1:length(envs)){
+  for(i in seq_along(envs)){
     edots <- dots
     for(j in 1:length(edots)){
       attributes(edots[[j]])$.Environment <- envs[[i]]

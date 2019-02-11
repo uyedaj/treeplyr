@@ -20,4 +20,4 @@ Imports:
 LinkingTo: Rcpp
 URL: https://github.com/uyedaj/treeplyr
 BugReports: https://github.com/uyedaj/treeplyr/issues
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
