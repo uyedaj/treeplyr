@@ -11,7 +11,7 @@ License: GPL-2 | GPL-3
 Depends:
     ape (>= 3.0-6),
     dplyr (>= 0.8.0),
-    R (>= 2.15.0)
+    R (>= 3.1.2)
 Imports:
     Rcpp (>= 0.10.3),
     lazyeval, 
