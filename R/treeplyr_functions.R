@@ -256,7 +256,8 @@ summarise.grouped_treedata <- function(.data, ...){
   nind <- (1:nrow(.data$dat))
   group_levels <- group_data(.data$dat)[[1]]
   group_by_var <- group_vars(.data$dat)
-  phys <- lapply(group_indices(.data$dat), function(x) drop.tip(.data$phy, nind[!(nind %in% x)]))
+  group_index <- group_indices(.data$dat)
+  phys <- lapply(group_levels, function(x) drop.tip(.data$phy, which(!(group_index %in% as.numeric(x)))))
   dat <- as.data.frame(.data$dat)
   rownames(dat) <- attributes(.data)$tip.label
   dats <- lapply(phys, function(x) make.treedata(x, dat)$dat)
@@ -642,6 +643,7 @@ filter_.grouped_treedata <- function(.data, ..., .dots){
 #'                    meanSVL = mean(SVL))
 #' @export
 paint_clades <- function(tdObject, nclades=1, name="clades", interactive=TRUE, type="nodes", ids=NULL, plot=TRUE){
+  tdObject <- reorder(tdObject, "postorder")
   if(interactive){
     regimes <- .identifyBranches(tdObject$phy, nclades)
     cat("branches ", paste(regimes$sb, collapse=", "), "selected\n")

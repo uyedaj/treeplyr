@@ -1,8 +1,8 @@
 Package: treeplyr
 Type: Package
 Title: 'dplyr' Functionality for Matched Tree and Data Objects
-Version: 0.1.4
-Date: 2018-05-31
+Version: 0.1.5
+Date: 2019-02-16
 Author: Josef Uyeda
 Maintainer: Josef Uyeda <josef.uyeda@gmail.com>
 Description: Matches phylogenetic trees and trait data, and
@@ -10,7 +10,7 @@ Description: Matches phylogenetic trees and trait data, and
 License: GPL-2 | GPL-3
 Depends:
     ape (>= 3.0-6),
-    dplyr (>= 0.6.0),
+    dplyr (>= 0.8.0),
     R (>= 2.15.0)
 Imports:
     Rcpp (>= 0.10.3),

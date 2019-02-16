@@ -31,9 +31,9 @@ test_that("treedata can handle matrix/dataframe input", {
   expect_identical(td_filtered$phy$tip.label, td_filtered$phy$tip.label[as.numeric(rownames(td_filtered$dat))])
   ##Make sure that treeply applies the function correctly
   
-  skip("needs fix to work with dplyr 0.8.0")
-  td_treeply <- treeply(td, rescale, model="OU", 10)
+  #skip("needs fix to work with dplyr 0.8.0")
+  td_treeply <- treeply(td, geiger::rescale, model="OU", 10)
   expect_identical(td_treeply$dat$SVL[match(anolis$phy$tip.label[jacknife], attributes(td)$tip.label)], originaldat[anolis$phy$tip.label[jacknife], "SVL"])
-  expect_identical(td_treeply$phy$edge.length, rescale(td$phy, "OU", 10)$edge.length)  
+  expect_identical(td_treeply$phy$edge.length, geiger::rescale(td$phy, "OU", 10)$edge.length)  
   
 })
