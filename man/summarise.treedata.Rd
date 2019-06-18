@@ -5,7 +5,6 @@
 \alias{summarize.treedata}
 \alias{summarize.grouped_treedata}
 \alias{summarise.grouped_treedata}
-\alias{summarise.grouped_treedata}
 \title{Function for summarizing an object of class \code{treedata}}
 \usage{
 \method{summarise}{treedata}(.data, ...)

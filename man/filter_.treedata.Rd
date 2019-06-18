@@ -5,7 +5,6 @@
 \alias{filter.treedata}
 \alias{filter_.grouped_treedata}
 \alias{filter.grouped_treedata}
-\alias{filter_.grouped_treedata}
 \title{Function for filtering rows from an object of class \code{treedata}}
 \usage{
 \method{filter_}{treedata}(.data, ..., .dots)

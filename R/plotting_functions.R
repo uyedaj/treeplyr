@@ -1,4 +1,5 @@
 #' Internal functions for painted_clades
+#' @keywords internal
 .plotRegimes <- function(tree, col=NULL, lwd=1, pal=rainbow, ...){
   if(is.null(col)){
     regNames <- unique(names(unlist(tree$maps)))
@@ -60,6 +61,7 @@
 }
 
 #' Internal function taken from bayou
+#' @keywords internal
 .identifyBranches <- function(tree, n, fixed.loc=TRUE, plot.simmap=TRUE){
   mar.old <- par('mar')
   par(mfrow=c(1,1), mar=c(0.1,0.1,0.1,0.1))
@@ -97,6 +99,7 @@
 }
 
 #' Internal function to determine tip regimes:
+#' @keywords internal
 .tipregime <- function(pars, tree){
   ntips <- length(tree$tip.label)
   tree <- reorder(tree, "postorder")
@@ -110,6 +113,8 @@
   return(tip.reg)
 }
 
+#' internal function from bayou
+#' @keywords internal
 .toSimmap <- function(map, cache){
   maps <- lapply(1:length(cache$edge.length), function(x){ y <- map$segs[which(map$branch==x)]; names(y) <- map$theta[which(map$branch==x)]; y })  
   tree <- cache$phy
@@ -118,6 +123,7 @@
 }
 
 #' This is an internal function modified from geiger's function .prepare.bm.univariate for use with OU models.
+#' @keywords internal
 .prepare.branches <- function(tree, ...){
   ntips <- length(tree$tip.label)
   tree <- reorder(tree, "postorder")
@@ -186,7 +192,8 @@
   return(cache)
 }
 
-## New version of .pars2map is faster, returns 3 elements rather than 2 named elements
+#' New version of .pars2map is faster, returns 3 elements rather than 2 named elements
+#' @keywords internal
 .pars2map <- function(pars, cache){
   nbranch <- length(cache$edge.length)
   nshifts <- table(pars$sb)
@@ -230,7 +237,8 @@
   return(list(segs=segs,theta=t2b, branch=ind))
 }
 
-## nodeHeights function from phytools
+#' nodeHeights function from phytools
+#' @keywords internal
 .nodeHeights <- function (tree) {
   if (!inherits(tree, "phylo")) 
     stop("tree should be an object of class \"phylo\".")

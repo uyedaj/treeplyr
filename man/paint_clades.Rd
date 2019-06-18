@@ -4,8 +4,8 @@
 \alias{paint_clades}
 \title{Add regimes to a treedata object}
 \usage{
-paint_clades(tdObject, nclades = 1, name = "clades", interactive = TRUE,
-  type = "nodes", ids = NULL, plot = TRUE)
+paint_clades(tdObject, nclades = 1, name = "clades",
+  interactive = TRUE, type = "nodes", ids = NULL, plot = TRUE)
 }
 \arguments{
 \item{tdObject}{A \code{treedata} object}

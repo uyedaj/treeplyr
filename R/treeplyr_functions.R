@@ -103,6 +103,30 @@ mutate_.treedata <- function(.data, ..., .dots){
   return(.data)
 }
 
+#' Choose rows by their ordinal position in the tbl for an object of class \code{treedata}
+#' 
+#' This function can be used to drop tips from tree and data; see \code{\link{slice}}.
+#' 
+#' @param .data An object of class \code{treedata}
+#' @param ... Integer row values
+#' @param .dots Pair/values of expressions coercible to lazy objects.
+#' @return An object of class \code{treedata}. 
+#' @seealso \code{\link{slice}}
+#' @examples
+#' data(anolis)
+#' td <- make.treedata(anolis$phy, anolis$dat)
+#' tdslice <- slice(td, 1:5)
+#' tdslice
+#' @export
+slice_.treedata <- function(.data, ..., .dots){
+  dots <- lazyeval::all_dots(.dots, ..., all_named=TRUE)
+  .data$dat$labelTEMP0123 <- .data$phy$tip.label
+  dat <- slice_(.data$dat, .dots = dots)
+  #row.names(dat) <- attributes(.data)$tip.label
+  .data <- make.treedata(.data$phy, dat)
+  return(.data)
+}
+
 
 #' Function for selecting columns from an object of class \code{treedata}
 #' 
@@ -744,6 +768,7 @@ ungroup.grouped_treedata <- function(x, ...){
 }
 
 #' .check_names_df function from tibble package
+#' @keywords internal
 .check_names_df <- function(x,j){
   if (is.character(j) && any(wrong <- !j %in% names(x))) {
     names <- j[wrong]
@@ -752,6 +777,7 @@ ungroup.grouped_treedata <- function(x, ...){
 }
 
 #' as_data_frame.data.frame function from the tibble package
+#' @keywords internal
 .as_data_frame.data.frame <- function (x, ...) 
 {
   class(x) <- c("tbl_df", "tbl", "data.frame")

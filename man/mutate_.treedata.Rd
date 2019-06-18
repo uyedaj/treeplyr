@@ -5,7 +5,6 @@
 \alias{mutate.treedata}
 \alias{mutate.grouped_treedata}
 \alias{mutate_.grouped_treedata}
-\alias{mutate_.grouped_treedata}
 \title{Function for mutating an object of class \code{treedata}}
 \usage{
 \method{mutate_}{treedata}(.data, ..., .dots)
