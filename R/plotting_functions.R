@@ -133,7 +133,7 @@
     n = as.integer(Nnode(phy))
     phy = reorder(phy, "postorder")
     zz = list(N = N, MAXNODE = N + n, ANC = as.integer(phy$edge[,1]), DES = as.integer(phy$edge[, 2]))
-    res = .Call("geiger_descendants", phy = zz, package = "treeplyr")
+    res = .Call("geiger_descendants", phy = zz, PACKAGE = "treeplyr")
     return(res)
   }
   desc <- .cache.descendants(tree)

@@ -8,10 +8,10 @@
 */
 
 /* .Call calls */
-extern SEXP geiger_descendants(SEXP, SEXP);
+extern SEXP geiger_descendants(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"geiger_descendants", (DL_FUNC) &geiger_descendants, 2},
+    {"geiger_descendants", (DL_FUNC) &geiger_descendants, 1},
     {NULL, NULL, 0}
 };
 
