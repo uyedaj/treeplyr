@@ -68,8 +68,8 @@ make.treedata <- function(tree, data, name_column="detect") {
     dat <- filter(dat, !duplicated(dat.label))
     dat.label <- dat.label[!duplicated(dat.label)]
   }
-  o <- match(dat.label, phy$tip.label)
-  dat <- arrange(dat, o)
+  ...my.order... <- match(dat.label, phy$tip.label)
+  dat <- arrange(dat, ...my.order...)
   td <- list(phy=phy, dat=dat)
   class(td) <- c("treedata", "list")
   attributes(td)$tip.label <- phy$tip.label
