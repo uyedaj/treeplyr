@@ -4,8 +4,15 @@
 \alias{paint_clades}
 \title{Add regimes to a treedata object}
 \usage{
-paint_clades(tdObject, nclades = 1, name = "clades",
-  interactive = TRUE, type = "nodes", ids = NULL, plot = TRUE)
+paint_clades(
+  tdObject,
+  nclades = 1,
+  name = "clades",
+  interactive = TRUE,
+  type = "nodes",
+  ids = NULL,
+  plot = TRUE
+)
 }
 \arguments{
 \item{tdObject}{A \code{treedata} object}
@@ -17,7 +24,7 @@ paint_clades(tdObject, nclades = 1, name = "clades",
 \item{interactive}{If \code{TRUE}, then a plot will appear that will allow the user to click on \code{nclades}
 branches. The selections will then be coverted into the data table.}
 
-\item{type}{Either "nodes" or "branches" specifying if the ids provided specify the branch id (assuming a 
+\item{type}{Either "nodes" or "branches" specifying if the ids provided specify the branch id (assuming a
 post-ordered tree) or the node number. Ignored if \code{interactive = TRUE}.}
 
 \item{ids}{A vector of node numbers of branch numbers that specify clades. Ignored if \code{interactive=TRUE}.}
@@ -32,10 +39,10 @@ belongs
 data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
 td <- reorder(td, "postorder")
-td.painted <- paint_clades(td, interactive=FALSE, type="nodes", 
+td.painted <- paint_clades(td, interactive=FALSE, type="nodes",
                                    ids=c(184, 160, 135, 122), plot=TRUE)
 td.painted <- group_by(td.painted, clades)
-summarise(td.painted, 
-             psig1 = phytools::phylosig(setNames(SVL, phy$tip.label), tree=phy), 
+summarise(td.painted,
+             psig1 = phytools::phylosig(setNames(SVL, phy$tip.label), tree=phy),
                    meanSVL = mean(SVL))
 }

@@ -14,10 +14,11 @@ Depends:
     R (>= 3.1.2)
 Imports:
     Rcpp (>= 0.10.3),
-    lazyeval, 
+    lazyeval,
     phytools,
     geiger
 LinkingTo: Rcpp
 URL: https://github.com/uyedaj/treeplyr
 BugReports: https://github.com/uyedaj/treeplyr/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
+Encoding: UTF-8

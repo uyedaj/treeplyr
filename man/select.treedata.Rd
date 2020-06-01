@@ -16,7 +16,7 @@
 An object of class \code{treedata} with specified variables selected.
 }
 \description{
-This function can be used to select a subset of variables (columns) from a treedata object; 
+This function can be used to select a subset of variables (columns) from a treedata object;
 see \code{\link{select}}.
 }
 \examples{

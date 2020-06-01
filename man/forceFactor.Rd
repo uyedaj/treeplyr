@@ -2,7 +2,7 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{forceFactor}
 \alias{forceFactor}
-\title{Function for checking whether a treedata object contains only factors and for forcing 
+\title{Function for checking whether a treedata object contains only factors and for forcing
 data columns into factor format}
 \usage{
 forceFactor(tdObject, return.factor = TRUE)
@@ -10,16 +10,16 @@ forceFactor(tdObject, return.factor = TRUE)
 \arguments{
 \item{tdObject}{A \code{treedata} object}
 
-\item{return.factor}{If TRUE, then a treedata object with all factors will be returned; 
-columns will be forced into factors using \code{factor} and any with no repeated elements 
+\item{return.factor}{If TRUE, then a treedata object with all factors will be returned;
+columns will be forced into factors using \code{factor} and any with no repeated elements
 will be removed.}
 }
 \value{
-If return.factor, then an object of class "\code{treedata}" with all columns as 
+If return.factor, then an object of class "\code{treedata}" with all columns as
 factors.
 }
 \description{
-This function can be used to check if a treedata object contains factors and, if desired, 
+This function can be used to check if a treedata object contains factors and, if desired,
 convert all columns automatically to factors.
 }
 \examples{

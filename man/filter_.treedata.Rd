@@ -22,7 +22,7 @@
 An object of class \code{treedata} with the dataset filtered by the specified criteria.
 }
 \description{
-This function can be used to select a subset of species (rows) from a treedata object; 
+This function can be used to select a subset of species (rows) from a treedata object;
 see \code{\link{filter}}.
 }
 \examples{
