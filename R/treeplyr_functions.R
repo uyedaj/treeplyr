@@ -119,7 +119,6 @@ mutate_.treedata <- function(.data, ...) {
 #'
 #' @param .data An object of class \code{treedata}
 #' @param ... Integer row values
-#' @param .dots Pair/values of expressions coercible to lazy objects.
 #' @return An object of class \code{treedata}.
 #' @seealso \code{\link{slice}}
 #' @examples
@@ -128,36 +127,24 @@ mutate_.treedata <- function(.data, ...) {
 #' tdslice <- slice(td, 1:5)
 #' tdslice
 #' @export
-slice_.treedata <- function(.data, ..., .dots){
-  dots <- lazyeval::all_dots(.dots, ..., all_named=TRUE)
+slice.treedata <- function(.data, ...){
   .data$dat$labelTEMP0123 <- .data$phy$tip.label
-  dat <- slice_(.data$dat, .dots = dots)
-  #row.names(dat) <- attributes(.data)$tip.label
+  dat <- slice(.data$dat, ...)
   .data <- make.treedata(.data$phy, dat)
   return(.data)
 }
 
 
-#' Function for selecting columns from an object of class \code{treedata}
+
+#' @title slice_.treedata
+#' @description Now defunct and replaced with slice.treedata
 #'
-#' This function can be used to select a subset of variables (columns) from a treedata object;
-#' see \code{\link{select}}.
-#'
-#' @aliases select_.grouped_treedata
-#' @param .data An object of class \code{treedata}
-#' @param ... Additional arguments to select columns
-#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
-#' @return An object of class \code{treedata} with specified variables selected.
-#' @seealso \code{\link{select}}
-#' @examples
-#' data(anolis)
-#' td <- make.treedata(anolis$phy, anolis$dat)
-#' tdselect <- select(td, SVL, awesomeness)
+#' @name slice_-defunct
+#' @seealso \code{\link{treeplyr-defunct}}
+#' @keywords internal
 #' @export
-select_.treedata <- function(.data, ..., .dots = list()){
-   dat <- .data$dat
-  .data$dat <- select_(dat, ..., .dots=.dots)
-  return(.data)
+slice_.treedata <- function(.data, ...) {
+  .Defunct(msg = "'slice_' has been removed from this package; you can use slice instead")
 }
 
 #' Function for selecting columns from an object of class \code{treedata}
@@ -169,20 +156,29 @@ select_.treedata <- function(.data, ..., .dots = list()){
 #' @param .data An object of class \code{treedata}
 #' @param ... Additional arguments to select columns
 #' @return An object of class \code{treedata} with specified variables selected.
-#' @seealso \code{\link{select_}}
+#' @seealso \code{\link{select}}
 #' @examples
 #' data(anolis)
 #' td <- make.treedata(anolis$phy, anolis$dat)
 #' tdselect <- select(td, SVL, awesomeness)
 #' @export
 select.treedata <- function(.data, ...){
-  #dots <- all_dots(.dots, ...)
-  #dat <- select(.data$dat, ...) #select_vars(names(.data$dat), !(!(!quos(...))))
-  #dat <- .data$dat[, vars, drop = FALSE]
-  #row.names(dat) <- attributes(.data)$tip.label
   .data$dat <- select(.data$dat, ...)
   return(.data)
 }
+
+
+#' @title select_.treedata
+#' @description Now defunct and replaced with select.treedata
+#'
+#' @name select_-defunct
+#' @seealso \code{\link{treeplyr-defunct}}
+#' @keywords internal
+#' @export
+select_.treedata <- function(.data, ...) {
+  .Defunct(msg = "'select_' has been removed from this package; you can use select instead")
+}
+
 
 #' Function for filtering rows from an object of class \code{treedata}
 #'
@@ -348,7 +344,7 @@ group_by.treedata <- function(.data, ..., add=FALSE){
 #' @seealso \code{\link{treeplyr-defunct}}
 #' @keywords internal
 #' @export
-group_by_.treedata <- function(.data, ..., .dots = list(), add = FALSE) {
+group_by_.treedata <- function(.data, ..., add = FALSE) {
     .Defunct(msg = "'group_by_' has been removed from this package; you can use group_by instead")
 }
 

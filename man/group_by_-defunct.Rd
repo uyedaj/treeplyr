@@ -5,7 +5,7 @@
 \alias{group_by_.treedata}
 \title{group_by_.treedata}
 \usage{
-\method{group_by_}{treedata}(.data, ..., .dots = list(), add = FALSE)
+\method{group_by_}{treedata}(.data, ..., add = FALSE)
 }
 \description{
 Now defunct and replaced with group_by.treedata.

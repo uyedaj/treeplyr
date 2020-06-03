@@ -25,5 +25,5 @@ td <- make.treedata(anolis$phy, anolis$dat)
 tdselect <- select(td, SVL, awesomeness)
 }
 \seealso{
-\code{\link{select_}}
+\code{\link{select}}
 }
