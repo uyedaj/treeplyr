@@ -330,7 +330,21 @@ group_by.treedata <- function(.data, ..., add=FALSE){
   return(.data)
 }
 
-group_by_.treedata <- function(...) {
+
+#' @title group_by_.treedata
+#' @description Now defunct and replaced with group_by.treedata.
+#'
+#' @name group_by_-defunct
+#' @seealso \code{\link{treeplyr-defunct}}
+#' @keywords internal
+NULL 
+
+#' @rdname treeplyr-defunct
+#' @section \code{group_by_.treedata}:
+#' Instead of \code{group_by_}, use \code{\link{group_by}}.
+#'
+#' @export
+group_by_.treedata <- function(.data, ..., .dots = list(), add = FALSE) {
     .Defunct(msg = "'group_by_' has been removed from this package; you can use group_by instead")
 }
 
