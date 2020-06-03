@@ -84,10 +84,9 @@ make.treedata <- function(tree, data, name_column="detect") {
 #'
 #' This function can be used to add new variables to a treedata object; see \code{\link{mutate}}.
 #'
-#' @aliases mutate.treedata mutate.grouped_treedata mutate_.grouped_treedata
+#' @aliases mutate.treedata mutate.grouped_treedata
 #' @param .data An object of class \code{treedata}
 #' @param ... Arguments to mutate the treedata object
-#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
 #' @return An object of class \code{treedata} with new data added.
 #' @seealso \code{\link{mutate}}
 #' @examples
@@ -95,13 +94,30 @@ make.treedata <- function(tree, data, name_column="detect") {
 #' td <- make.treedata(anolis$phy, anolis$dat)
 #' tdmutate <- mutate(td, lnSVL = log(SVL), badassery = awesomeness + hostility)
 #' @export
-mutate_.treedata <- function(.data, ..., .dots){
-  dots <- lazyeval::all_dots(.dots, ..., all_named=TRUE)
-  dat <- mutate_(.data$dat, .dots = dots)
-  #row.names(dat) <- attributes(.data)$tip.label
+mutate.treedata <- function(.data, ...){
+  dat <- mutate(.data$dat, ...)
   .data$dat <- dat
   return(.data)
 }
+
+
+#' @title mutate_.treedata
+#' @description Now defunct and replaced with mutate.treedata and mutate_.grouped_treedata.
+#'
+#' @name mutate_-defunct
+#' @seealso \code{\link{treeplyr-defunct}}
+#' @keywords internal
+NULL 
+
+#' @rdname treeplyr-defunct
+#' @section \code{mutate_.treedata}:
+#' Instead of \code{mutate_}, use \code{\link{mutate}}.
+#'
+#' @export
+mutate_.treedata <- function(.data, ...) {
+  .Defunct(msg = "'mutate_' has been removed from this package; you can use mutate instead")
+}
+
 
 #' Choose rows by their ordinal position in the tbl for an object of class \code{treedata}
 #'

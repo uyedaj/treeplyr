@@ -4,8 +4,12 @@
 \alias{treeplyr-defunct}
 \alias{group_by_}
 \alias{group_by_.treedata}
+\alias{mutate_}
+\alias{mutate_.treedata}
 \title{Defunct functions in treeplyr}
 \usage{
+\method{mutate_}{treedata}(.data, ...)
+
 \method{group_by_}{treedata}(.data, ..., .dots = list(), add = FALSE)
 }
 \arguments{
@@ -21,8 +25,14 @@ These functions have been removed to reflect changes in dplyr.
 \details{
 \itemize{
  \item \code{\link{group_by_.treedata}}: This function is defunct, use group_by instead.
+ \item \code{\link{mutate_.treedata}}: This function is defunct, use mutate instead.
 }
 }
+\section{\code{mutate_.treedata}}{
+
+Instead of \code{mutate_}, use \code{\link{mutate}}.
+}
+
 \section{\code{group_by_.treedata}}{
 
 Instead of \code{group_by_}, use \code{\link{group_by}}.
