@@ -324,7 +324,7 @@ summarise.grouped_treedata <- function(.data, ...){
 #' @export
 group_by.treedata <- function(.data, ..., add=FALSE){
   groups <- group_by_prepare(.data$dat, ..., add = add)
-  dat <- grouped_df(groups$data, groups$groups)
+  dat <- grouped_df(groups$data, groups$group_names)
   .data$dat <- dat
   class(.data) <- c("grouped_treedata", "treedata", "list")
   return(.data)

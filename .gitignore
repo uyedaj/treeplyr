@@ -1,0 +1,10 @@
+# Ignore specific files
+.DS_Store
+~*
+.Rhistory
+*.a
+*.o
+*.so
+geiger.Rcheck
+*~
+.Rproj.user*
