@@ -2,7 +2,11 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{mutate_-defunct}
 \alias{mutate_-defunct}
+\alias{mutate_.treedata}
 \title{mutate_.treedata}
+\usage{
+\method{mutate_}{treedata}(.data, ...)
+}
 \description{
 Now defunct and replaced with mutate.treedata and mutate_.grouped_treedata.
 }

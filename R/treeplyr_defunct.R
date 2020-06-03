@@ -8,9 +8,6 @@
 #' }
 #'
 #' @name treeplyr-defunct
-#' @aliases group_by_ group_by_.treedata mutate_ mutate_.treedata
-#' @param .data A data frame
-#' @param .dots,... Pair/valyes of expressions coercible to lazy objects
-#' @param add Add to or override existing groups
+#' @aliases group_by_ mutate_
 
 NULL
