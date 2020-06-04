@@ -185,10 +185,9 @@ select_.treedata <- function(.data, ...) {
 #' This function can be used to select a subset of species (rows) from a treedata object;
 #' see \code{\link{filter}}.
 #'
-#' @aliases filter.treedata filter_.grouped_treedata filter.grouped_treedata
+#' @aliases filter.grouped_treedata
 #' @param .data An object of class \code{treedata}
 #' @param ... Additional arguments to filter by
-#' @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
 #' @return An object of class \code{treedata} with the dataset filtered by the specified criteria.
 #' @seealso \code{\link{filter}}
 #' @examples
@@ -196,18 +195,28 @@ select_.treedata <- function(.data, ...) {
 #' td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
 #' tdfilter <- filter(td, island=="Cuba", SVL > 3.5)
 #' @export
-filter_.treedata <- function(.data, ..., .dots){
-  dots <- lazyeval::all_dots(.dots, ...)
+filter.treedata <- function(.data, ...){
   tip.labels <- attributes(.data)$tip.label
   .data$dat <- mutate(.data$dat, tip.label=tip.labels)
-  dat <- filter_(.data$dat, .dots = dots)
+  dat <- filter(.data$dat, ...)
   .data$dat <- dat
   attributes(.data)$tip.label <- .data$dat$tip.label
   nc <- ncol(.data$dat)
   .data$dat <- select(.data$dat, 1:(nc-1))
   .data$phy <- drop.tip(.data$phy, .data$phy$tip.label[!(.data$phy$tip.label %in% attributes(.data)$tip.label)])
-  #attributes(.data$dat)$row.names <- .data$phy$tip.label
   return(.data)
+}
+
+
+#' @title filter_.treedata
+#' @description Now defunct and replaced with filter.treedata
+#'
+#' @name filter_-defunct
+#' @seealso \code{\link{treeplyr-defunct}}
+#' @keywords internal
+#' @export
+filter_.treedata <- function(.data, ...) {
+  .Defunct(msg = "'filter_' has been removed from this package; you can use select instead")
 }
 
 #' Function for summarizing an object of class \code{treedata}
@@ -242,40 +251,6 @@ summarise.treedata <- function(.data, ...){
 }
 
 
-# Function for summarizing an object of class \code{treedata}
-#
-# This function can be used to summarize a treedata object.
-#
-# @aliases summarise_.treedata summarize_.grouped_treedata summarise_.grouped_treedata
-# @param .data An object of class \code{treedata}
-# @param ... Additional expressions by which to summarize data in the \code{treedata} object
-# @param .dots Used to work around non-standard evaluation. See \code{vignette}("nse") for details.
-# @details Summarizing \code{treedata} objects allows expressions using the objects \code{phy}. The \code{treedata}
-# object can also be grouped, with summary statistics being applied to the pruned groups and phylogenies.
-# @return An object of class \code{tbl_df} with the requested summary data.
-# @seealso \code{\link{summarize}}, \code{\link{group_by}}
-# @examples
-# data(anolis)
-# td <- make.treedata(anolis$phy, anolis$dat)
-# summarize(td, ntips = length(phy$tip.label), meanSVL = mean(SVL), sdSVL = sd(SVL))
-# tdGrouped <- group_by(td, ecomorph)
-# summarize(tdGrouped, ntips = length(phy$tip.label),
-#    totalBL = sum(phy$edge.length), meanSVL = mean(SVL), sdSVL = sd(SVL))
-# @export
-#summarise_.treedata <- function(.data, ..., .dots=list()){
-  #if(is.null(list(substitute(...))[[1]])) stop("No expression provided to summarize data")
-#  dots <- lazyeval::all_dots(.dots, ..., all_named = TRUE)
-#  env <- new.env(parent = parent.frame(), size = 1L)
-#  env$phy <- .data$phy
-#  env$dat <- as.data.frame(.data$dat)
-#  env$tip.label <- .data$phy$tip.label
-#  #rownames(env$dat) <- env$phy$tip.label
-#  for(i in 1:length(dots)){
-#    dots[[i]]$env <- env
-#  }
-#  res <- summarise_(.data$dat, .dots = dots)
-#  return(res)
-#}
 
 #' @rdname summarise.treedata
 #' @export
@@ -635,29 +610,49 @@ forceFactor <- function(tdObject, return.factor=TRUE) {
   }
 }
 
-#' @rdname mutate_.treedata
+#' @rdname mutate.treedata
 #' @export
-mutate_.grouped_treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ..., all_named=TRUE)
-  dat <- mutate_(.data$dat, .dots = dots)
-  #row.names(dat) <- .data$phy$tip.label
+mutate.grouped_treedata <- function(.data, ...){
+  dat <- mutate(.data$dat, ...)
   .data$dat <- dat
   return(.data)
 }
 
-#' @rdname filter_.treedata
+
+#' @title mutate_.grouped_treedata
+#' @description Now defunct and replaced with mutate.groupedtreedata.
+#'
+#' @name mutate_-defunct
+#' @seealso \code{\link{treeplyr-defunct}}
+#' @keywords internal
 #' @export
-filter_.grouped_treedata <- function(.data, ..., .dots){
-  dots <- all_dots(.dots, ...)
+mutate_.grouped_treedata <- function(.data, ..., add = FALSE) {
+  .Defunct(msg = "'mutate_' has been removed from this package; you can use group_by instead")
+}
+
+#' @rdname filter.treedata
+#' @export
+filter.grouped_treedata <- function(.data, ...){
   cl <- class(.data$dat)
   .data$dat$tip.label <- .data$phy$tip.label
-  dat <- filter_(.data$dat, .dots = dots)
+  dat <- filter_(.data$dat, ...)
   .data$dat <- dat
   attributes(.data)$tip.label <- .data$dat$tip.label
   .data$dat <- select(.data$dat, 1:(ncol(.data$dat)-1))
   class(.data$dat) <- cl
   .data$phy <- drop.tip(.data$phy, .data$phy$tip.label[!(.data$phy$tip.label %in% attributes(.data)$tip.label)])
   return(.data)
+}
+
+#' @title filter_.grouped_treedata
+#' @description Now defunct and replaced with filter.groupedtreedata.
+#'
+#' @name filter_-defunct
+#' @seealso \code{\link{treeplyr-defunct}}
+#' @keywords internal
+#' @export
+filter_.grouped_treedata <- function(.data, ...) {
+  .Defunct(msg = "'filter_' has been removed from this package; you can use filter instead")
 }
 
 #' Add regimes to a treedata object

@@ -6,6 +6,8 @@
 \title{Function for mutating an object of class \code{treedata}}
 \usage{
 \method{mutate}{treedata}(.data, ...)
+
+\method{mutate}{grouped_treedata}(.data, ...)
 }
 \arguments{
 \item{.data}{An object of class \code{treedata}}

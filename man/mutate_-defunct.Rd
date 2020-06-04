@@ -3,14 +3,21 @@
 \name{mutate_-defunct}
 \alias{mutate_-defunct}
 \alias{mutate_.treedata}
+\alias{mutate_.grouped_treedata}
 \title{mutate_.treedata}
 \usage{
 \method{mutate_}{treedata}(.data, ...)
+
+\method{mutate_}{grouped_treedata}(.data, ..., add = FALSE)
 }
 \description{
 Now defunct and replaced with mutate.treedata and mutate_.grouped_treedata.
+
+Now defunct and replaced with mutate.groupedtreedata.
 }
 \seealso{
+\code{\link{treeplyr-defunct}}
+
 \code{\link{treeplyr-defunct}}
 }
 \keyword{internal}
