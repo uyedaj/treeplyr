@@ -1,8 +1,8 @@
 Package: treeplyr
 Type: Package
 Title: 'dplyr' Functionality for Matched Tree and Data Objects
-Version: 0.1.8
-Date: 2019-12-20
+Version: 0.1.9
+Date: 2020-06-04
 Author: Josef Uyeda
 Maintainer: Josef Uyeda <josef.uyeda@gmail.com>
 Description: Matches phylogenetic trees and trait data, and

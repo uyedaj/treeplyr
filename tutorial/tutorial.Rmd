@@ -78,23 +78,28 @@ mutate(td, Xall = (X1+X2+X3)/3, D1.binary = as.numeric(D1)-1)
 ```
 
 ## III. Programmatic use
-Note that if you want to use *treeplyr* programatically, you may not want to use these functions, as they will
-not result in the desired behavior. For example:
+You can use treeplyr programatically. For example:
 ``` {r }
 mytraits <- c('X1', 'D1')
-try(select(td, mytraits))
+select(td, all_of(mytraits))
 ```
 
-The *treeplyr* function expects a column called "mytraits" rather than evaluating the variable *mytraits*. To 
-use programatically (as with *dplyr*), use the same functions followed by an underscore:
+Similarly with filter and mutate:
 ``` {r }
-select_(td, .dots=as.list(mytraits))
-```
+# doesn't work yet
+#criteria <- list("X1 > -1", "D1 == 'Hello'", "is.na(XNA1)==TRUE")
 
-A similar operation can be done for functions such as filter and mutate:
-``` {r }
-criteria <- list("X1 > -1", "D1 == 'Hello'", "is.na(XNA1)==TRUE")
-filter_(td, .dots=criteria)
+criteria <- list(
+  quote(X1 > -1),
+  quote(D1 == 'Hello'),
+  quote(is.na(XNA1)==TRUE)
+)
+res<-td
+for(i in 1:length(criteria)) {
+  res<-filter(res, !!criteria[[i]])
+}
+res
+
 ```
 
 *treeplyr* is mostly just a wrapper that passes on functions to *dplyr*, so most of the *dplyr* functionality is still there. 
