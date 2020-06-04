@@ -266,25 +266,6 @@
   return(X[o, ])
 }
 
-## Functions taken from dplyr
-group_by_prepare <- function (.data, ..., .dots, add = FALSE) {
-  new_groups <- lazyeval::all_dots(.dots, ...)
-  is_name <- vapply(new_groups, function(x) is.name(x$expr), 
-                    logical(1))
-  has_name <- names2(new_groups) != ""
-  needs_mutate <- has_name | !is_name
-  if (any(needs_mutate)) {
-    .data <- mutate_(.data, .dots = new_groups[needs_mutate])
-  }
-  new_groups <- lazyeval::auto_name(new_groups)
-  groups <- lapply(names(new_groups), as.name)
-  if (add) {
-    groups <- c(groups(.data), groups)
-  }
-  groups <- groups[!duplicated(groups)]
-  list(data = .data, groups = groups)
-}
-
 names2 <- function (x) {
   names(x) %||% rep("", length(x))
 }

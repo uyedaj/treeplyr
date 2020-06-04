@@ -1,8 +1,8 @@
 Package: treeplyr
 Type: Package
 Title: 'dplyr' Functionality for Matched Tree and Data Objects
-Version: 0.1.8
-Date: 2019-12-20
+Version: 0.1.9
+Date: 2020-06-04
 Author: Josef Uyeda
 Maintainer: Josef Uyeda <josef.uyeda@gmail.com>
 Description: Matches phylogenetic trees and trait data, and
@@ -14,10 +14,11 @@ Depends:
     R (>= 3.1.2)
 Imports:
     Rcpp (>= 0.10.3),
-    lazyeval, 
+    lazyeval,
     phytools,
     geiger
 LinkingTo: Rcpp
 URL: https://github.com/uyedaj/treeplyr
 BugReports: https://github.com/uyedaj/treeplyr/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
+Encoding: UTF-8

@@ -3,7 +3,7 @@ cache: packages
 warnings_are_errors: TRUE
 
 before_install:
-  - sudo add-apt-repository -y ppa:opencpu/imagemagick
+  - sudo add-apt-repository -y ppa:cran/imagemagick
   - sudo apt-get update
   - sudo apt-get install -y libmagick++-dev
 

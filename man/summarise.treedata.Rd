@@ -31,7 +31,7 @@ data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
 summarize(td, ntips = length(phy$tip.label), meanSVL = mean(SVL), sdSVL = sd(SVL))
 tdGrouped <- group_by(td, ecomorph)
-summarize(tdGrouped, ntips = length(phy$tip.label), 
+summarize(tdGrouped, ntips = length(phy$tip.label),
    totalBL = sum(phy$edge.length), meanSVL = mean(SVL), sdSVL = sd(SVL))
 }
 \seealso{

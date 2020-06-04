@@ -2,7 +2,7 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{forceNumeric}
 \alias{forceNumeric}
-\title{Function for checking whether a treedata object contains only numeric columns and for forcing 
+\title{Function for checking whether a treedata object contains only numeric columns and for forcing
 data columns into numeric format}
 \usage{
 forceNumeric(tdObject, return.numeric = TRUE)
@@ -10,14 +10,14 @@ forceNumeric(tdObject, return.numeric = TRUE)
 \arguments{
 \item{tdObject}{A \code{treedata} object}
 
-\item{return.numeric}{If TRUE, then a treedata object with all numeric columns will be returned; 
+\item{return.numeric}{If TRUE, then a treedata object with all numeric columns will be returned;
 non-numeric columns will be removed.}
 }
 \value{
 If return.numeric, then an object of class "\code{treedata}" with only numeric columns.
 }
 \description{
-This function can be used to check if a treedata object contains numeric columns and, if 
+This function can be used to check if a treedata object contains numeric columns and, if
 desired, drop all non-numeric columns.
 }
 \examples{

@@ -21,7 +21,7 @@ Function output
 Run a function on a \code{treedata} object
 }
 \details{
-This function allows arbitrary R functions that use trees and data to be run on 
+This function allows arbitrary R functions that use trees and data to be run on
 \code{treedata} objects.
 }
 \examples{

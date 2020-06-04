@@ -2,7 +2,7 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{tdapply}
 \alias{tdapply}
-\title{Apply a function over all treedata object columns and return a list of results, analogously to the 
+\title{Apply a function over all treedata object columns and return a list of results, analogously to the
 normal apply function}
 \usage{
 tdapply(tdObject, MARGIN, FUN, ...)
@@ -17,11 +17,11 @@ tdapply(tdObject, MARGIN, FUN, ...)
 \item{...}{Additional parameters passed on to FUN}
 }
 \description{
-Apply a function over all treedata object columns and return a list of results, analogously to the 
+Apply a function over all treedata object columns and return a list of results, analogously to the
 normal apply function
 }
 \details{
-Note that if the parameter \code{phy} is specified in the additional parameters (i.e. '...'), 
+Note that if the parameter \code{phy} is specified in the additional parameters (i.e. '...'),
 then it will be substituted with the \code{treedata} object \code{$phy}.
 }
 \examples{

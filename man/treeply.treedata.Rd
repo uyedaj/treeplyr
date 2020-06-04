@@ -20,15 +20,15 @@ treeply(tdObject, ...)
 An object of class \code{treedata}
 }
 \description{
-Applies a function to the phylogeny in a \code{treedata} object. If the order of 
-tips are changed, or if tips are dropped, then the data are automatically reordered 
+Applies a function to the phylogeny in a \code{treedata} object. If the order of
+tips are changed, or if tips are dropped, then the data are automatically reordered
 to match the tree.
 }
 \examples{
 data(anolis)
 td <- make.treedata(anolis$phy, anolis$dat)
 td2 <- treeply(td, drop.tip, 1:50)
-  
+
 par(mfrow=c(1,2))
 plot(td$phy)
 plot(td2$phy)

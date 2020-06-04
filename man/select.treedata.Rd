@@ -16,7 +16,7 @@
 An object of class \code{treedata} with specified variables selected.
 }
 \description{
-This function can be used to select a subset of variables (columns) from a treedata object; 
+This function can be used to select a subset of variables (columns) from a treedata object;
 see \code{\link{select}}.
 }
 \examples{
@@ -25,5 +25,5 @@ td <- make.treedata(anolis$phy, anolis$dat)
 tdselect <- select(td, SVL, awesomeness)
 }
 \seealso{
-\code{\link{select_}}
+\code{\link{select}}
 }

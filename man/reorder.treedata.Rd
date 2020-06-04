@@ -7,8 +7,7 @@
 \usage{
 reorder(tdObject, ...)
 
-\method{reorder}{treedata}(tdObject, order = "postorder",
-  index.only = FALSE, ...)
+\method{reorder}{treedata}(tdObject, order = "postorder", index.only = FALSE, ...)
 }
 \arguments{
 \item{tdObject}{An object of class \code{treedata}}
