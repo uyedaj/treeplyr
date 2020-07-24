@@ -15,4 +15,5 @@
 #' @importFrom graphics legend lines locator par plot points text
 #' @importFrom stats setNames
 #' @importFrom utils type.convert
+#' @importFrom tibble as_tibble
 NULL
