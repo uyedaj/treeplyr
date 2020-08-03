@@ -42,7 +42,7 @@ make.treedata <- function(tree, data, name_column="detect") {
       name_column <- which(name_column==coln)[1]
     }
   }
-  dat <- tbl_df(as.data.frame(lapply(1:ncol(data), function(x)
+  dat <- as_tibble(as.data.frame(lapply(1:ncol(data), function(x)
     type.convert(apply(data[,x, drop=FALSE], 1, as.character)))))
   colnames(dat) <- coln
   if(name_column==0){
