@@ -63,7 +63,8 @@
 #' Internal function taken from bayou
 #' @keywords internal
 .identifyBranches <- function(tree, n, fixed.loc=TRUE, plot.simmap=TRUE){
-  mar.old <- par('mar')
+  oldpar <- par(no.readonly = TRUE)    # code line i
+  on.exit(par(oldpar))       
   par(mfrow=c(1,1), mar=c(0.1,0.1,0.1,0.1))
   tree <- reorder(tree,"postorder")
   plot(tree, cex=0.5)
@@ -92,7 +93,6 @@
     L <- get("last_plot.phylo", envir = .PlotPhyloEnv)
     legend(min(L$xx), max(L$yy), legend=names(cols), lwd=3, col=cols)
   }
-  par(mar=mar.old)
   out <- list(sb=sb)
   if(fixed.loc) out$loc <- loc
   return(out)
