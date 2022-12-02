@@ -2,13 +2,13 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{slice_-defunct}
 \alias{slice_-defunct}
-\alias{slice_.treedata}
-\title{slice_.treedata}
+\alias{slice_.treeplyrdata}
+\title{slice_.treeplyrdata}
 \usage{
-\method{slice_}{treedata}(.data, ...)
+\method{slice_}{treeplyrdata}(.data, ...)
 }
 \description{
-Now defunct and replaced with slice.treedata
+Now defunct and replaced with slice.treeplyrdata
 }
 \seealso{
 \code{\link{treeplyr-defunct}}

@@ -20,5 +20,8 @@ Imports:
 LinkingTo: Rcpp
 URL: https://github.com/uyedaj/treeplyr
 BugReports: https://github.com/uyedaj/treeplyr/issues
-RoxygenNote: 7.1.0
+RoxygenNote: 7.2.1
 Encoding: UTF-8
+
+
+

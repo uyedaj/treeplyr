@@ -2,31 +2,31 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{reorder}
 \alias{reorder}
-\alias{reorder.treedata}
-\title{Reorder a \code{treedata} object}
+\alias{reorder.treeplyrdata}
+\title{Reorder a \code{treeplyrdata} object}
 \usage{
 reorder(tdObject, ...)
 
-\method{reorder}{treedata}(tdObject, order = "postorder", index.only = FALSE, ...)
+\method{reorder}{treeplyrdata}(tdObject, order = "postorder", index.only = FALSE, ...)
 }
 \arguments{
-\item{tdObject}{An object of class \code{treedata}}
+\item{tdObject}{An object of class \code{treeplyrdata}}
 
 \item{...}{Additional arguments to reorder.phylo}
 
 \item{order}{Method for reordering}
 
-\item{index.only}{Whether a index is returned rather than the reordered treedata object}
+\item{index.only}{Whether a index is returned rather than the reordered treeplyrdata object}
 }
 \value{
-An object of class \code{treedata}
+An object of class \code{treeplyrdata}
 }
 \description{
-Reorders a \code{treedata} object. Both the tips and the data are automatically reordered to match.
+Reorders a \code{treeplyrdata} object. Both the tips and the data are automatically reordered to match.
 }
 \examples{
 data(anolis)
-td <- make.treedata(anolis$phy, anolis$dat)
+td <- make.treeplyrdata(anolis$phy, anolis$dat)
 td <- reorder(td, "postorder")
 }
 \seealso{

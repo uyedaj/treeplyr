@@ -7,7 +7,7 @@
 getVector(td, ...)
 }
 \arguments{
-\item{td}{A treedata object}
+\item{td}{A treeplyrdata object}
 
 \item{...}{The name of the column to select}
 }

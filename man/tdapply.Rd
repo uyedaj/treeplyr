@@ -2,13 +2,13 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{tdapply}
 \alias{tdapply}
-\title{Apply a function over all treedata object columns and return a list of results, analogously to the
+\title{Apply a function over all treeplyrdata object columns and return a list of results, analogously to the
 normal apply function}
 \usage{
 tdapply(tdObject, MARGIN, FUN, ...)
 }
 \arguments{
-\item{tdObject}{A treedata object}
+\item{tdObject}{A treeplyrdata object}
 
 \item{MARGIN}{the margin over which the data is applied (e.g. 1 = rows, 2 = columns)}
 
@@ -17,15 +17,15 @@ tdapply(tdObject, MARGIN, FUN, ...)
 \item{...}{Additional parameters passed on to FUN}
 }
 \description{
-Apply a function over all treedata object columns and return a list of results, analogously to the
+Apply a function over all treeplyrdata object columns and return a list of results, analogously to the
 normal apply function
 }
 \details{
 Note that if the parameter \code{phy} is specified in the additional parameters (i.e. '...'),
-then it will be substituted with the \code{treedata} object \code{$phy}.
+then it will be substituted with the \code{treeplyrdata} object \code{$phy}.
 }
 \examples{
 data(anolis)
-td <- make.treedata(anolis$phy, anolis$dat)
+td <- make.treeplyrdata(anolis$phy, anolis$dat)
 td \%>\% forceNumeric(.) \%>\% tdapply(., 2, phytools::phylosig, tree=phy)
 }

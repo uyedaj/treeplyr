@@ -2,18 +2,18 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{filter_-defunct}
 \alias{filter_-defunct}
-\alias{filter_.treedata}
-\alias{filter_.grouped_treedata}
-\title{filter_.treedata}
+\alias{filter_.treeplyrdata}
+\alias{filter_.grouped_treeplyrdata}
+\title{filter_.treeplyrdata}
 \usage{
-\method{filter_}{treedata}(.data, ...)
+\method{filter_}{treeplyrdata}(.data, ...)
 
-\method{filter_}{grouped_treedata}(.data, ...)
+\method{filter_}{grouped_treeplyrdata}(.data, ...)
 }
 \description{
-Now defunct and replaced with filter.treedata
+Now defunct and replaced with filter.treeplyrdata
 
-Now defunct and replaced with filter.groupedtreedata.
+Now defunct and replaced with filter.groupedtreeplyrdata.
 }
 \seealso{
 \code{\link{treeplyr-defunct}}

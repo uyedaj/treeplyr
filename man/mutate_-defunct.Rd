@@ -2,18 +2,18 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{mutate_-defunct}
 \alias{mutate_-defunct}
-\alias{mutate_.treedata}
-\alias{mutate_.grouped_treedata}
-\title{mutate_.treedata}
+\alias{mutate_.treeplyrdata}
+\alias{mutate_.grouped_treeplyrdata}
+\title{mutate_.treeplyrdata}
 \usage{
-\method{mutate_}{treedata}(.data, ...)
+\method{mutate_}{treeplyrdata}(.data, ...)
 
-\method{mutate_}{grouped_treedata}(.data, ..., add = FALSE)
+\method{mutate_}{grouped_treeplyrdata}(.data, ..., add = FALSE)
 }
 \description{
-Now defunct and replaced with mutate.treedata and mutate_.grouped_treedata.
+Now defunct and replaced with mutate.treeplyrdata and mutate_.grouped_treeplyrdata.
 
-Now defunct and replaced with mutate.groupedtreedata.
+Now defunct and replaced with mutate.groupedtreeplyrdata.
 }
 \seealso{
 \code{\link{treeplyr-defunct}}

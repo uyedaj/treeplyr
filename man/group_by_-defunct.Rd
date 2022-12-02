@@ -2,13 +2,13 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{group_by_-defunct}
 \alias{group_by_-defunct}
-\alias{group_by_.treedata}
-\title{group_by_.treedata}
+\alias{group_by_.treeplyrdata}
+\title{group_by_.treeplyrdata}
 \usage{
-\method{group_by_}{treedata}(.data, ..., add = FALSE)
+\method{group_by_}{treeplyrdata}(.data, ..., add = FALSE)
 }
 \description{
-Now defunct and replaced with group_by.treedata.
+Now defunct and replaced with group_by.treeplyrdata.
 }
 \seealso{
 \code{\link{treeplyr-defunct}}

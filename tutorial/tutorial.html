@@ -410,15 +410,15 @@ dat &lt;- data.frame(X1 = rnorm(50), X2 = rnorm(50), X3 = rnorm(50),
 ## 4  0.7002136 -0.4635304  0.8303732   s4 Hello  0 0.3   NA
 ## 5  1.5868335 -1.1159201 -1.2080828   s5 Hello  0 0.3   NA
 ## 6  0.5584864 -0.7508190 -1.0479844   s6 World  0 0.3   NA</code></pre>
-<p>Notice that the dataset we have created has a mix of trait types, with both discrete and continuous characters, some data with missing data, and species names buried in the middle of the data matrix. The function <em>make.treedata</em> will search the data table for the column with the most matches to the tree, and automatically use this column for matching. It will also search the rownames. Either way, the command is quite simple:</p>
-<pre class="r"><code>td &lt;- make.treedata(tree, dat)</code></pre>
+<p>Notice that the dataset we have created has a mix of trait types, with both discrete and continuous characters, some data with missing data, and species names buried in the middle of the data matrix. The function <em>make.treeplyrdata</em> will search the data table for the column with the most matches to the tree, and automatically use this column for matching. It will also search the rownames. Either way, the command is quite simple:</p>
+<pre class="r"><code>td &lt;- make.treeplyrdata(tree, dat)</code></pre>
 <pre><code>## Warning: `tbl_df()` is deprecated as of dplyr 1.0.0.
 ## Please use `tibble::as_tibble()` instead.
 ## This warning is displayed once every 8 hours.
 ## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
-<p>We can use summary to display information about our treedata object.</p>
+<p>We can use summary to display information about our treeplyrdata object.</p>
 <pre class="r"><code>summary(td)</code></pre>
-<pre><code>## A treeplyr treedata object 
+<pre><code>## A treeplyr treeplyrdata object 
 ## The dataset contains  7  traits 
 ## Continuous traits:  X1 X2 X3 D3 XNA1 
 ## Discrete traits:  D1 D2 
@@ -449,7 +449,7 @@ dat &lt;- data.frame(X1 = rnorm(50), X2 = rnorm(50), X3 = rnorm(50),
 ##  9 -1.22  -1.29    0.412 Hello     0   2.3    NA
 ## 10 -0.473 -1.64   -0.381 World     1   1.3    NA
 ## # ... with 30 more rows</code></pre>
-<p>We can also use indices directly on the treedata object, but note that these drop the tree:</p>
+<p>We can also use indices directly on the treeplyrdata object, but note that these drop the tree:</p>
 <pre class="r"><code>td[[1]]</code></pre>
 <pre><code>##          s1          s2          s3          s4          s5          s6 
 ## -0.54252003  1.20786781  1.16040262  0.70021365  1.58683345  0.55848643 
@@ -514,12 +514,12 @@ dat &lt;- data.frame(X1 = rnorm(50), X2 = rnorm(50), X3 = rnorm(50),
 <h2>II. The Basics: Reorder, Select, Filter, &amp; Mutate</h2>
 <div id="reorder" class="section level3">
 <h3><em>reorder</em></h3>
-<p>The treedata object itself is made up of a list of two elements <em><span class="math inline">\(phy* giving the tree and *\)</span>dat</em> providing in the data. One operation that is relatively common is changing the ordering of the phylogeny. It’s important to maintain a match between the tree and the data.</p>
+<p>The treeplyrdata object itself is made up of a list of two elements <em><span class="math inline">\(phy* giving the tree and *\)</span>dat</em> providing in the data. One operation that is relatively common is changing the ordering of the phylogeny. It’s important to maintain a match between the tree and the data.</p>
 <pre class="r"><code>td &lt;- reorder(td, &quot;postorder&quot;)</code></pre>
 </div>
 <div id="select" class="section level3">
 <h3><em>select</em></h3>
-<p>We can use <em>dplyr</em> functions <em>select</em>, <em>filter</em> and <em>mutate</em> directly on the treedata object. The <em>select</em> function allows you to choose which columns you want in the dataset. Any number of columns can be specified:</p>
+<p>We can use <em>dplyr</em> functions <em>select</em>, <em>filter</em> and <em>mutate</em> directly on the treeplyrdata object. The <em>select</em> function allows you to choose which columns you want in the dataset. Any number of columns can be specified:</p>
 <pre class="r"><code>select(td, X1, D1)</code></pre>
 <pre><code>## $phy 
 ## 
@@ -916,15 +916,15 @@ res</code></pre>
 ## 10 World     1   1.3
 ## # ... with 30 more rows</code></pre>
 </div>
-<div id="iv.-applying-functions-to-treedata-objects-treeply-treedply-and-tdapply" class="section level2">
-<h2>IV. Applying functions to treedata objects: treeply, treedply and tdapply</h2>
-<p>In many cases, the user may simply want to split apart the treedata object after matching and proceed in their analyses as normal. For example, we could measure phylogenetic signal in our trait <em>X1</em>:</p>
+<div id="iv.-applying-functions-to-treeplyrdata-objects-treeply-treedply-and-tdapply" class="section level2">
+<h2>IV. Applying functions to treeplyrdata objects: treeply, treedply and tdapply</h2>
+<p>In many cases, the user may simply want to split apart the treeplyrdata object after matching and proceed in their analyses as normal. For example, we could measure phylogenetic signal in our trait <em>X1</em>:</p>
 <pre class="r"><code>phytools::phylosig(td$phy, getVector(td, X1))</code></pre>
 <pre><code>## 
 ## Phylogenetic signal K : 0.0598349</code></pre>
 <div id="treedply" class="section level3">
 <h3><em>treedply</em></h3>
-<p>You can also run it directly on the treedata object using the function treedply:</p>
+<p>You can also run it directly on the treeplyrdata object using the function treedply:</p>
 <pre class="r"><code>treedply(td, phytools::phylosig(phy, getVector(td, X1), &quot;K&quot;))</code></pre>
 <pre><code>## 
 ## Phylogenetic signal K : 0.0598349</code></pre>
@@ -944,7 +944,7 @@ res</code></pre>
 </div>
 <div id="forcefactor-forcenumeric" class="section level3">
 <h3><em>forceFactor</em> &amp; <em>forceNumeric</em></h3>
-<p>We can also use the function <em>tdapply</em> which calls the <em>apply</em> function, but allows inclusion of the phylogeny. This can be useful for applying the same function over every column in our dataset. First though, we can use the functions <em>forceNumeric</em> and <em>forceFactor</em> to make sure that every column is of a type that can be analyzed by a function like <em>phenogram</em> or <em>phylosig</em>. These functions to force the traits in the treedata object to be a factor or a continuous data, dropping those that cannot be converted.</p>
+<p>We can also use the function <em>tdapply</em> which calls the <em>apply</em> function, but allows inclusion of the phylogeny. This can be useful for applying the same function over every column in our dataset. First though, we can use the functions <em>forceNumeric</em> and <em>forceFactor</em> to make sure that every column is of a type that can be analyzed by a function like <em>phenogram</em> or <em>phylosig</em>. These functions to force the traits in the treeplyrdata object to be a factor or a continuous data, dropping those that cannot be converted.</p>
 <pre class="r"><code>tdDiscrete &lt;- forceFactor(td)</code></pre>
 <pre><code>## Warning in forceFactor(td): Data contain numeric entries, which will be
 ## converted to factors</code></pre>

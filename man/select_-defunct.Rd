@@ -2,13 +2,13 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{select_-defunct}
 \alias{select_-defunct}
-\alias{select_.treedata}
-\title{select_.treedata}
+\alias{select_.treeplyrdata}
+\title{select_.treeplyrdata}
 \usage{
-\method{select_}{treedata}(.data, ...)
+\method{select_}{treeplyrdata}(.data, ...)
 }
 \description{
-Now defunct and replaced with select.treedata
+Now defunct and replaced with select.treeplyrdata
 }
 \seealso{
 \code{\link{treeplyr-defunct}}
