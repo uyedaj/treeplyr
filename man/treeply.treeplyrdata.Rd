@@ -2,31 +2,31 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{treeply}
 \alias{treeply}
-\alias{treeply.treedata}
-\title{Run a function on the phylogeny of a \code{treedata} object}
+\alias{treeply.treeplyrdata}
+\title{Run a function on the phylogeny of a \code{treeplyrdata} object}
 \usage{
 treeply(tdObject, ...)
 
-\method{treeply}{treedata}(tdObject, FUN, ...)
+\method{treeply}{treeplyrdata}(tdObject, FUN, ...)
 }
 \arguments{
-\item{tdObject}{An object of class \code{treedata}}
+\item{tdObject}{An object of class \code{treeplyrdata}}
 
 \item{...}{Additional arguments}
 
 \item{FUN}{A function that operates on an object of class 'phylo'}
 }
 \value{
-An object of class \code{treedata}
+An object of class \code{treeplyrdata}
 }
 \description{
-Applies a function to the phylogeny in a \code{treedata} object. If the order of
+Applies a function to the phylogeny in a \code{treeplyrdata} object. If the order of
 tips are changed, or if tips are dropped, then the data are automatically reordered
 to match the tree.
 }
 \examples{
 data(anolis)
-td <- make.treedata(anolis$phy, anolis$dat)
+td <- make.treeplyrdata(anolis$phy, anolis$dat)
 td2 <- treeply(td, drop.tip, 1:50)
 
 par(mfrow=c(1,2))

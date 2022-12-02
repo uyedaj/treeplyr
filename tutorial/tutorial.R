@@ -17,15 +17,15 @@ tree
 head(dat)
 
 ## Notice that the dataset we have created has a mix of trait types, with both discrete and continuous characters, some data with missing data,
-## and species names buried in the middle of the data matrix. The function *make.treedata* will search the data table for the column with 
+## and species names buried in the middle of the data matrix. The function *make.treeplyrdata* will search the data table for the column with 
 ## the most matches to the tree, and automatically use this column for matching. It will also search the rownames. Either way, the command is
 ## quite simple:
-td <- make.treedata(tree, dat)
+td <- make.treeplyrdata(tree, dat)
 
-## We can use summary to display information about our treedata object. 
+## We can use summary to display information about our treeplyrdata object. 
 summary(td)
 
-## We can also use indices directly on the treedata object, but note that these drop the tree:
+## We can also use indices directly on the treeplyrdata object, but note that these drop the tree:
 td[[1]]
 td[['X1']]
 td[1:10,1:2]
@@ -34,12 +34,12 @@ td[1:10, 1, tip.label=TRUE]
 
 ## ## II. The Basics: Reorder, Select, Filter, & Mutate
 ## ### *reorder*
-## The treedata object itself is made up of a list of two elements *$phy* giving the tree and *$dat* providing in the data. One operation
+## The treeplyrdata object itself is made up of a list of two elements *$phy* giving the tree and *$dat* providing in the data. One operation
 ## that is relatively common is changing the ordering of the phylogeny. It's important to maintain a match between the tree and the data. 
 td <- reorder(td, "postorder")
 
 ## ### *select*
-## We can use *dplyr* functions *select*, *filter* and *mutate* directly on the treedata object. The *select* function allows you to choose
+## We can use *dplyr* functions *select*, *filter* and *mutate* directly on the treeplyrdata object. The *select* function allows you to choose
 ## which columns you want in the dataset. Any number of columns can be specified:
 select(td, X1, D1)
 select(td, 1:3)
@@ -84,13 +84,13 @@ select(td, which(sapply(td$dat, type_sum)=="int"))
 select(td, -matches("NA"))
 select(td, -starts_with("X"))
 
-## ## IV. Applying functions to treedata objects: treeply, treedply and tdapply
-## In many cases, the user may simply want to split apart the treedata object after matching and proceed in their analyses as normal. 
+## ## IV. Applying functions to treeplyrdata objects: treeply, treedply and tdapply
+## In many cases, the user may simply want to split apart the treeplyrdata object after matching and proceed in their analyses as normal. 
 ## For example, we could measure phylogenetic signal in our trait *X1*:
 phytools::phylosig(td$phy, td[['X1']])
 
 ## ### *treedply*
-## You can also run it directly on the treedata object using the function treedply:
+## You can also run it directly on the treeplyrdata object using the function treedply:
 treedply(td, phytools::phylosig(phy, td[['X1']], "K"))
 
         
@@ -103,7 +103,7 @@ treedply(td, list("K" = phytools::phylosig(phy, td[['X1']], "K"),
 ## We can also use the function *tdapply* which calls the *apply* function, but allows inclusion of the phylogeny. This can be useful for 
 ## applying the same function over every column in our dataset. First though, we can use the functions *forceNumeric* and *forceFactor* to 
 ## make sure that every column is of a type that can be analyzed by a function like *phenogram* or *phylosig*.  These functions to force 
-## the traits in the treedata object to be a factor or a continuous data, dropping those that cannot be converted. 
+## the traits in the treeplyrdata object to be a factor or a continuous data, dropping those that cannot be converted. 
 tdDiscrete <- forceFactor(td)
 tdNumeric <- forceNumeric(td)
 

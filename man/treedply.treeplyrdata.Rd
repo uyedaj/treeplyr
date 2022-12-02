@@ -2,15 +2,15 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{treedply}
 \alias{treedply}
-\alias{treedply.treedata}
-\title{Run a function on a \code{treedata} object}
+\alias{treedply.treeplyrdata}
+\title{Run a function on a \code{treeplyrdata} object}
 \usage{
 treedply(tdObject, ...)
 
-\method{treedply}{treedata}(tdObject, ...)
+\method{treedply}{treeplyrdata}(tdObject, ...)
 }
 \arguments{
-\item{tdObject}{A treedata object}
+\item{tdObject}{A treeplyrdata object}
 
 \item{...}{A function call.}
 }
@@ -18,15 +18,15 @@ treedply(tdObject, ...)
 Function output
 }
 \description{
-Run a function on a \code{treedata} object
+Run a function on a \code{treeplyrdata} object
 }
 \details{
 This function allows arbitrary R functions that use trees and data to be run on
-\code{treedata} objects.
+\code{treeplyrdata} objects.
 }
 \examples{
 data(anolis)
-td <- make.treedata(anolis$phy, anolis$dat)
+td <- make.treeplyrdata(anolis$phy, anolis$dat)
 treedply(td, geiger::fitContinuous(phy, getVector(td, SVL), model="BM", ncores=1))
 treedply(td, phytools::phylosig(phy, getVector(td, awesomeness), "lambda", test=TRUE))
 treedply(td, phytools::phenogram(phy, getVector(td, SVL), ftype="off", spread.labels=FALSE))

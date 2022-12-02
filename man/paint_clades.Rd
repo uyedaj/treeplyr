@@ -2,7 +2,7 @@
 % Please edit documentation in R/treeplyr_functions.R
 \name{paint_clades}
 \alias{paint_clades}
-\title{Add regimes to a treedata object}
+\title{Add regimes to a treeplyrdata object}
 \usage{
 paint_clades(
   tdObject,
@@ -15,7 +15,7 @@ paint_clades(
 )
 }
 \arguments{
-\item{tdObject}{A \code{treedata} object}
+\item{tdObject}{A \code{treeplyrdata} object}
 
 \item{nclades}{The number of clades that will be specified if used interactively}
 
@@ -37,7 +37,7 @@ belongs
 }
 \examples{
 data(anolis)
-td <- make.treedata(anolis$phy, anolis$dat)
+td <- make.treeplyrdata(anolis$phy, anolis$dat)
 td <- reorder(td, "postorder")
 td.painted <- paint_clades(td, interactive=FALSE, type="nodes",
                                    ids=c(184, 160, 135, 122), plot=TRUE)

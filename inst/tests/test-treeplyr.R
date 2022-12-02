@@ -1,8 +1,8 @@
 context("treeplyr functions work")
-test_that("treedata can handle matrix/dataframe input", {
+test_that("treeplyrdata can handle matrix/dataframe input", {
   require(testthat)
   data(anolis)
-  td <- make.treedata(anolis$phy, anolis$dat, name_column=1)
+  td <- make.treeplyrdata(anolis$phy, anolis$dat, name_column=1)
   originaldat <- anolis$dat[,-1]
   rownames(originaldat) <- anolis$dat[,1]
   jacknife <- sample(1:nrow(anolis$dat), 10, replace=FALSE)
