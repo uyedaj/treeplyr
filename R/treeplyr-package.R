@@ -7,7 +7,8 @@
 #' @author Josef Uyeda
 #' @name treeplyr
 #' @useDynLib treeplyr, .registration = TRUE
-#' @import ape dplyr Rcpp
+#' @import ape Rcpp
+#' @rawNamespace import(dplyr, except = where)
 #' @importFrom lazyeval all_dots
 #' @importFrom phytools phylosig
 #' @importFrom geiger fitContinuous
