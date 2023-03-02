@@ -9,6 +9,7 @@
 #' names to be matched to the tree. By default, it is set to "detect" which finds the column with the
 #' most matches to the tree (including
 #' the rownames).
+#' @param as.is Whether convert to factors. When FALSE (default), convert character vectors to factors. 
 #' @return An object of class "\code{treedata}". The tree is pruned of tips not represented in the data,
 #' and the data is filtered for taxa not in the tree. The data is returned as a data frame tble that is
 #' compatible with \code{dplyr} functions.
@@ -16,8 +17,8 @@
 #' data(anolis)
 #' td <- make.treedata(anolis$phy, anolis$dat)
 #' @export
-make.treedata <- function(tree, data, name_column="detect") {
-  if(class(tree)!="phylo") stop("tree must be of class 'phylo'")
+make.treedata <- function(tree, data, name_column="detect", as.is=FALSE) {
+  if(!inherits(tree, "phylo")) stop("tree must be of class 'phylo'")
   if(is.vector(data)){
     data <- as.matrix(data)
     colnames(data) <- "trait"
@@ -43,7 +44,7 @@ make.treedata <- function(tree, data, name_column="detect") {
     }
   }
   dat <- as_tibble(as.data.frame(lapply(1:ncol(data), function(x)
-    type.convert(apply(data[,x, drop=FALSE], 1, as.character)))))
+    type.convert(apply(data[,x, drop=FALSE], 1, as.character), as.is=as.is))))
   colnames(dat) <- coln
   if(name_column==0){
     clnm <- colnames(dat)
@@ -290,8 +291,8 @@ summarise.grouped_treedata <- function(.data, ...){
 #' @aliases group_by.treedata
 #' @param .data An object of class \code{treedata}
 #' @param ... The name of the grouping factor.
-#' @param add By default, when add = FALSE, group_by will override existing groups.
-#' To instead add to the existing groups, use add = TRUE
+#' @param .add By default, when .add = FALSE, group_by will override existing groups.
+#' To instead add to the existing groups, use .add = TRUE
 #' @param x An object of class \code{treedata}
 #' @details Groups the data frame and phylogeny by one of the factors in the data table.
 #' @return An object of class \code{grouped_treedata}.
@@ -303,8 +304,8 @@ summarise.grouped_treedata <- function(.data, ...){
 #' summarize(tdGrouped, ntips = length(phy$tip.label),
 #'    totalBL = sum(phy$edge.length), meanSVL = mean(SVL), sdSVL = sd(SVL))
 #' @export
-group_by.treedata <- function(.data, ..., add=FALSE){
-  groups <- group_by_prepare(.data$dat, ..., add = add)
+group_by.treedata <- function(.data, ..., .add=FALSE){
+  groups <- group_by_prepare(.data$dat, ..., .add = .add)
   dat <- grouped_df(groups$data, groups$group_names)
   .data$dat <- dat
   class(.data) <- c("grouped_treedata", "treedata", "list")
