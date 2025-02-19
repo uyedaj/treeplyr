@@ -2,7 +2,7 @@ Package: treeplyr
 Type: Package
 Title: 'dplyr' Functionality for Matched Tree and Data Objects
 Version: 0.1.11
-Date: 2023-03-02
+Date: 2025-02-19
 Authors@R: c(
     person(given = "Josef",
            family = "Uyeda", 
